@@ -178,7 +178,7 @@ export function Editor({ post }: EditorProps) {
                         className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
                         {...register("title")}
                     />
-                    <ComboboxDemo />
+                    {/* <ComboboxDemo /> */}
                     <div id="editor" className="min-h-[500px]" />
                     <p className="text-sm text-gray-500">
                         Use{" "}

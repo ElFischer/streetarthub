@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth"
 import GitHubProvider from "next-auth/providers/github"
+import GoogleProvider from "next-auth/providers/google";
 
 import { Adapter } from "next-auth/adapters"
 import { FirestoreAdapter } from "@auth/firebase-adapter"
@@ -20,6 +21,10 @@ export const authOptions: NextAuthOptions = {
             clientId: env.GITHUB_CLIENT_ID,
             clientSecret: env.GITHUB_CLIENT_SECRET,
         }),
+        GoogleProvider({
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET
+        })
     ],
     callbacks: {
         session: async ({ session, token, user }) => {

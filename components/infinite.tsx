@@ -97,10 +97,10 @@ function Feed() {
                                                 className="object-cover group-hover:opacity-75"
                                                 priority={index <= num1}
                                             />
-                                        ) : photo.content.blocks.find((o: any) => o.type === 'image') ? (
+                                        ) : photo.content?.blocks.find((o: any) => o.type === 'image') ? (
                                             <div>{getBlockImage(photo)}</div>
                                         ) : (
-                                            <div>OK</div>
+                                            <div>{photo.title}</div>
                                         )}
                                         <Link href={`art/${photo.id}`} className="absolute inset-0">
                                             <span className="sr-only">View Article</span>
