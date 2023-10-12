@@ -22,6 +22,8 @@ export const PostSchema = z.object({
     }).optional(),
     source: z.string().optional(),
     date: z.number(),
+    createdAt: z.any().optional(),
+    updatedAt: z.any().optional(),
     approved: z.boolean(),
     artist: z.array(z.string()).optional(),
     category: z.array(z.string()).optional(),

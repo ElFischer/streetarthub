@@ -9,9 +9,9 @@ export async function postsNextBatch(key?: string): Promise<PostsFeed | undefine
     try {
         let fbResponse
         if (key) {
-            fbResponse = query(collection(db, "streetart"), limit(25), orderBy("date", "desc"), startAfter(key));
+            fbResponse = query(collection(db, "streetart"), limit(25), orderBy("createdAt", "desc"), startAfter(key));
         } else {
-            fbResponse = query(collection(db, "streetart"), limit(25), orderBy("date", "desc"));
+            fbResponse = query(collection(db, "streetart"), limit(25), orderBy("createdAt", "desc"));
         }
 
         const documentSnapshots = await getDocs(fbResponse);
@@ -19,6 +19,14 @@ export async function postsNextBatch(key?: string): Promise<PostsFeed | undefine
         const docs = documentSnapshots.docs.map(doc => {
             const postData = doc.data();
             const validatedData = PostSchema.parse(postData);
+
+            /* let newItemData = { ...validatedData, updatedAt: Timestamp.fromDate(new Date()), createdAt: Timestamp.fromDate(new Date()) }
+            updatePost(newItemData, doc.id).then((res) => {
+                console.log(res)
+            }).catch((err) => {
+                console.log(err)
+            }) */
+
             return { ...validatedData, id: doc.id };
         });
 
@@ -36,7 +44,7 @@ export async function postsNextBatch(key?: string): Promise<PostsFeed | undefine
 export async function getPosts(filter?: any): Promise<PostsFeed | undefined> {
     try {
         let fbResponse
-        fbResponse = query(collection(db, "streetart"), where("author.id", "==", filter.where.authorId), limit(25), orderBy("createdAt"));
+        fbResponse = query(collection(db, "streetart"), where("author.id", "==", filter.where.authorId), limit(25));
 
         const documentSnapshots = await getDocs(fbResponse);
 
@@ -64,6 +72,8 @@ export async function getPost(id: string): Promise<Post | undefined> {
 
         if (docSnap.exists()) {
             const validatedData = PostSchema.parse(docSnap.data());
+            console.log(validatedData)
+
             return validatedData
         } else {
             // docSnap.data() will be undefined in this case
