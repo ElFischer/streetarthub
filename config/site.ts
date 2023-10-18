@@ -1,4 +1,4 @@
-import { SiteConfig } from "@/types"
+import { SiteConfig, FooterConfig } from "@/types"
 
 export const siteConfig: SiteConfig = {
   name: "streetarthub",
@@ -10,4 +10,59 @@ export const siteConfig: SiteConfig = {
     twitter: "https://twitter.com/streetarthub",
     github: "https://github.com/ElFischer/streetarthub",
   },
+}
+
+export const footerNavigation: FooterConfig = {
+  solutions: [
+    { name: 'Marketing', href: '#' },
+    { name: 'Analytics', href: '#' },
+    { name: 'Commerce', href: '#' },
+    { name: 'Insights', href: '#' },
+  ],
+  support: [
+    { name: 'Pricing', href: '#' },
+    { name: 'Documentation', href: '#' },
+    { name: 'Guides', href: '#' },
+    { name: 'API Status', href: '#' },
+  ],
+  company: [
+    { name: 'About', href: '#' },
+    { name: 'Blog', href: '#' },
+    { name: 'Jobs', href: '#' },
+    { name: 'Press', href: '#' },
+    { name: 'Partners', href: '#' },
+  ],
+  legal: [
+    { name: 'Claim', href: '#' },
+    { name: 'Privacy', href: '#' },
+    { name: 'Terms', href: '#' },
+  ],
+  social: [
+    {
+      name: 'Facebook',
+      href: 'https://www.facebook.com/streetarthub/',
+      icon: "facebookSM",
+    },
+    {
+      name: 'Instagram',
+      href: 'https://www.instagram.com/streetarthub/',
+      icon: "instagramSM",
+    },
+    {
+      name: 'GitHub',
+      href: 'https://github.com/ElFischer/streetarthub',
+      icon: "gitHubSM",
+    },
+    {
+      name: 'Twitter',
+      href: 'https://twitter.com/streetarthub',
+      icon: "twitterSM",
+    },
+    {
+      name: 'Pinterest',
+      href: 'https://www.pinterest.de/streetarthub/',
+      icon: "pinterestSM",
+    },
+    
+  ],
 }

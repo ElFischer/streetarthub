@@ -7,22 +7,28 @@ import { compareDesc } from "date-fns"
 import { formatDate } from "@/lib/utils"
 
 export const metadata = {
-  title: "Artboards",
+    title: "Artboards",
 }
 
 export default async function BlogPage() {
-  /* const posts = allPosts
-    .filter((post) => post.published)
-    .sort((a, b) => {
-      return compareDesc(new Date(a.date), new Date(b.date))
-    }) */
+    /* const posts = allPosts
+      .filter((post) => post.published)
+      .sort((a, b) => {
+        return compareDesc(new Date(a.date), new Date(b.date))
+      }) */
 
     const posts: any[] = []
 
-  return (
-    <div className="container-fluid">
-      <Feed />
-      {/* <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
+    return (
+        <div className="container">
+            <div className="py-16 lg:max-w-2xl">
+                <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight max-w-lg md:max-w-2xl">Artists</h1>
+                <p className="mt-6 text-base leading-7 text-muted-foreground">
+                    We&apos;ve gathered a diverse lineup of Streetart creators and their inspiring works. Explore a world of unique styles. From graffiti innovators to mural artists, our platform is your window into the rich diversity of Streetart and the visionaries who shape it.
+                </p>
+            </div>
+            <Feed />
+            {/* <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
         <div className="flex-1 space-y-4">
           <h1 className="inline-block font-heading text-4xl tracking-tight lg:text-5xl">
             Blog
@@ -33,7 +39,7 @@ export default async function BlogPage() {
         </div>
       </div> 
       <hr className="my-8" />*/}
-      {/* {posts?.length ? (
+            {/* {posts?.length ? (
         <div className="grid gap-10 sm:grid-cols-2">
           {posts.map((post, index) => (
             <article
@@ -68,6 +74,6 @@ export default async function BlogPage() {
       ) : (
         <p>No posts published.</p>
       )} */}
-    </div>
-  )
+        </div>
+    )
 }
