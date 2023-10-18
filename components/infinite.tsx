@@ -83,11 +83,17 @@ function Feed() {
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
                 <>
-                    <section className="my-3 grid gap-5 grid-cols-gallery">
+                    <section className="my-3 grid gap-5 grid-cols-4">
+                        {/* <article className='col-span-2 rounded-md relative overflow-hidden group pr-10'>
+                            <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">Artists</h2>
+                            <p className="mt-6 text-base leading-7 text-muted-foreground">
+                                Enter the realm of Streetart through our artist gallery. We&apos;ve gathered a diverse lineup of Streetart creators and their inspiring works. Explore a world of unique styles and stories, as each artist&apos;s portfolio comes to life. From graffiti innovators to mural artists, our platform is your window into the rich tapestry of Streetart and the talented visionaries who shape it.
+                            </p>
+                        </article> */}
                         {data?.pages.map((page, i) => (
                             <React.Fragment key={i}>
                                 {page.docs.map((photo: any, index: number) => (
-                                    <article key={photo.id} className='h-64 bg-gray-200 rounded-md relative overflow-hidden group'>
+                                    <article key={photo.id} className='h-72 bg-gray-200 rounded-md relative overflow-hidden group'>
                                         {photo.media ? (
                                             <Image
                                                 src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${photo.media[0]}?alt=media`}

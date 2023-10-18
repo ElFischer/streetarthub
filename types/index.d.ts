@@ -21,6 +21,20 @@ export type SiteConfig = {
   }
 }
 
+type FooterLink = {
+  name: string;
+  href: string;
+  icon?: keyof typeof Icons
+};
+
+export type FooterConfig = {
+  solutions: FooterLink[]
+  support: FooterLink[]
+  company: FooterLink[]
+  legal: FooterLink[]
+  social: FooterLink[]
+}
+
 export type NavItem = {
   title: string
   href: string
@@ -35,15 +49,15 @@ export type SidebarNavItem = {
   external?: boolean
   icon?: keyof typeof Icons
 } & (
-  | {
+    | {
       href: string
       items?: never
     }
-  | {
+    | {
       href?: string
       items: NavLink[]
     }
-)
+  )
 
 export type CorporateConfig = {
   mainNav: MainNavItem[]
