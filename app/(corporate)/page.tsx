@@ -79,9 +79,9 @@ export default function IndexPage() {
     <>
       {/* Hero section */}
       <section className="relative overflow-hidden h-[calc(100vh-5rem)]">
-        <div className="pb-80 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
-          <div className="relative container sm:static">
-            <div className="">
+        <div className="pt-16 sm:pt-24 lg:pt-40"> {/* pb-80 sm:pb-40 lg:pb-48  */}
+          <div className="relative container lg:static">
+            <div className="z-10 relative lg:absolute">
               <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight max-w-lg md:max-w-2xl">
                 We’re a passionate group of people collecting streetart from around the world.
               </h1>
@@ -105,17 +105,20 @@ export default function IndexPage() {
                 </Link>
               </div> */}
             </div>
-            <div className="mt-10">
-              {/* Decorative image grid */}
+            <div className="mt-10 pl-10 lg:p-0">
               <div
                 aria-hidden="true"
                 className="pointer-events-none lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl"
               >
-                <div className="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
+                <div className="absolute transform sm:left-1/2 top-0 md:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
+                  {/* Mobile BG */}
+                  <div className="lg:hidden absolute inset-0 bg-gradient-to-t from-background to-transparent z-10" />
+
+                  {/* Image grid */}
                   <div className="flex items-center space-x-6 lg:space-x-8">
                     <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
 
-                      <div className="h-44 w-44 overflow-hidden rounded-lg sm:opacity-0 lg:opacity-100 relative">
+                      <div className="h-44 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F01h0FCbKPJLhJsPIRE5x_0.JPG?alt=media"
                           sizes="500"
@@ -124,7 +127,7 @@ export default function IndexPage() {
                           className="object-cover object-center"
                         />
                       </div>
-                      <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                      <div className="h-64 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F2YghBvctKwgLYVyqE4YD_0.JPG?alt=media"
                           sizes="500"
@@ -135,7 +138,7 @@ export default function IndexPage() {
                       </div>
                     </div>
                     <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                      <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                      <div className="h-64 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F2ZC95ik0LMl4gvhtciXP_0.JPG?alt=media"
                           sizes="500"
@@ -144,7 +147,7 @@ export default function IndexPage() {
                           className="object-cover object-center"
                         />
                       </div>
-                      <div className="h-32 w-44 overflow-hidden rounded-lg relative">
+                      <div className="h-32 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F31GveOMegJKThL32GGXS_0.JPG?alt=media"
                           sizes="500"
@@ -153,7 +156,7 @@ export default function IndexPage() {
                           className="object-cover object-center"
                         />
                       </div>
-                      <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                      <div className="h-64 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F2zfWsMa7nWoBuCw74zZO_0.JPG?alt=media"
                           sizes="500"
@@ -164,7 +167,7 @@ export default function IndexPage() {
                       </div>
                     </div>
                     <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                      <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                      <div className="h-64 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F3Oi0zrNvkAH37XmTQLS8_0.JPG?alt=media"
                           sizes="500"
@@ -173,7 +176,7 @@ export default function IndexPage() {
                           className="object-cover object-center"
                         />
                       </div>
-                      <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                      <div className="h-64 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F3TGaAFqPAW3BbfsWnt2y_0.JPG?alt=media"
                           sizes="500"
@@ -184,7 +187,7 @@ export default function IndexPage() {
                       </div>
                     </div>
                     <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                      <div className="h-44 w-44 overflow-hidden rounded-lg relative">
+                      <div className="h-44 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F3bnG42EN0dTs9eH5IQYl_0.JPG?alt=media"
                           sizes="500"
@@ -193,7 +196,7 @@ export default function IndexPage() {
                           className="object-cover object-center"
                         />
                       </div>
-                      <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                      <div className="h-64 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F3cdCYzWV3YtmDcx7FD05_0.JPG?alt=media"
                           sizes="500"
@@ -202,7 +205,7 @@ export default function IndexPage() {
                           className="object-cover object-center"
                         />
                       </div>
-                      <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                      <div className="h-64 w-44 overflow-hidden rounded-lg relative opacity-20 lg:opacity-100">
                         <Image
                           src="https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F3glqZTo1awOiygPaZPcX_0.JPG?alt=media"
                           sizes="500"
@@ -252,7 +255,7 @@ export default function IndexPage() {
                     </span>
                     <span
                       aria-hidden="true"
-                      className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50"
+                      className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-20"
                     />
                     <span className="relative mt-auto text-center text-xl font-bold text-white tracking-tight font-heading">{category.name}</span>
                   </Link>
@@ -273,8 +276,8 @@ export default function IndexPage() {
       {/* Artists section */}
       <section className="mt-32 overflow-hidden sm:mt-40">
         <div className="container lg:flex relative">
-          <div className="absolute lg:right-8 z-10">
-            <Link href="/artists" title="Browse all artists - streetarthub" className="hidden lg:block text-sm font-semibold hover:text-orange-500 my-10">
+          <div className="hidden lg:block absolute lg:right-8 z-10">
+            <Link href="/artists" title="Browse all artists - streetarthub" className="text-sm font-semibold hover:text-orange-500 my-10">
               Browse all artists
               <span aria-hidden="true"> &rarr;</span>
             </Link>
@@ -285,9 +288,15 @@ export default function IndexPage() {
               <p className="mt-6 text-xl leading-8 text-muted-foreground">
                 Step into the world of remarkable artists, the driving force behind our Streetart portal. Explore their unique creations, share their artwork, and immerse yourself in the artistic essence of the streets.
               </p>
-              <p className="mt-6 text-base leading-7 text-muted-foreground">
+              <p className="my-6 text-base leading-7 text-muted-foreground">
                 In our Streetart portal, we proudly showcase the incredibly talented artists who infuse urban landscapes with their artistic brilliance. Our Artists&rsquo; Corner is a tribute to their creative spirit. Here, you can discover a gallery filled with their captivating works, find inspiration, and connect with the visionary artists who breathe life into the streets. Whether you&rsquo;re an artist looking to share your talents or an enthusiast eager to explore and appreciate Streetart, this is your platform to embrace the heart and soul of street artistry.
               </p>
+              <div className="lg:hidden absolute z-10">
+                <Link href="/artists" title="Browse all artists - streetarthub" className="text-sm font-semibold hover:text-orange-500 my-10">
+                  Browse all artists
+                  <span aria-hidden="true"> &rarr;</span>
+                </Link>
+              </div>
             </div>
             <div className="flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents">
               <div className="w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end">
