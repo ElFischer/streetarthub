@@ -83,7 +83,7 @@ function Feed() {
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
                 <>
-                    <section className="my-3 grid gap-5 grid-cols-gallery">
+                    <section className="my-3 grid gap-5 grid-cols-mobile-gallery sm:grid-cols-gallery">
                         {/* <article className='col-span-2 rounded-md relative overflow-hidden group pr-10'>
                             <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">Artists</h2>
                             <p className="mt-6 text-base leading-7 text-muted-foreground">

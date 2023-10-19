@@ -78,6 +78,7 @@ module.exports = {
       },
       gridTemplateColumns: {
         "gallery": "repeat(auto-fit, minmax(350px, 1fr))",
+        "mobile-gallery": "repeat(auto-fit, minmax(100%, 1fr))",
       },
     },
   },
