@@ -357,11 +357,11 @@ export default async function IndexPage() {
               </p>
             </div>
           </div>
-          <div className="flex flex-col-reverse justify-between gap-x-16 gap-y-8 rounded-2xl bg-orange-600 p-8 sm:w-11/12 sm:max-w-xl sm:flex-row-reverse sm:items-end lg:w-full lg:max-w-none lg:flex-auto lg:flex-col lg:items-start lg:gap-y-28">
+          <div className="flex flex-col-reverse justify-between gap-x-16 gap-y-8 rounded-2xl bg-gray-600 p-8 sm:w-11/12 sm:max-w-xl sm:flex-row-reverse sm:items-end lg:w-full lg:max-w-none lg:flex-auto lg:flex-col lg:items-start lg:gap-y-28">
             <p className="flex-none text-3xl font-bold tracking-tight text-white">{artistCount} artists</p>
             <div className="sm:w-80 sm:shrink lg:w-auto lg:flex-none">
               <p className="text-lg font-semibold tracking-tight text-white">Celebrating Streetart Talents</p>
-              <p className="mt-2 text-base leading-7 text-orange-200">
+              <p className="mt-2 text-base leading-7 text-gray-100">
                 Our platform boasts a diverse roster of talented Streetart artists. Join this creative melting pot and be inspired by their unique visions.
               </p>
             </div>
