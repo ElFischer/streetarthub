@@ -1,6 +1,9 @@
 import {
   AlertTriangle,
   ArrowRight,
+  ArrowBigDown,
+  ArrowBigUp,
+  Heart,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -11,6 +14,7 @@ import {
   HelpCircle,
   Image,
   Laptop,
+  Link,
   Loader2,
   LucideProps,
   Moon,
@@ -27,6 +31,10 @@ import {
 
 export const Icons = {
   logo: Command,
+  link: Link,
+  upVote: ArrowBigUp,
+  downVote: ArrowBigDown,
+  heart: Heart,
   close: X,
   spinner: Loader2,
   chevronLeft: ChevronLeft,
