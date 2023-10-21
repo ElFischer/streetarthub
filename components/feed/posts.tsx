@@ -91,7 +91,7 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
                             {data?.pages.map((page, i) => (
                                 <React.Fragment key={i}>
                                     {page.docs.map((photo: any, index: number) => (
-                                        <Card key={index} id={photo.id} title={photo.title} image={getBlockImage(photo)} />
+                                        <Card key={index} id={photo.id} title={photo.title} image={getBlockImage(photo)} source={photo.source} />
                                     ))}
                                 </React.Fragment>
                             ))}
