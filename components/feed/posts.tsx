@@ -64,10 +64,6 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
         }
     }, [inView, fetchNextPage])
 
-    React.useEffect(() => {
-        console.log('collection', collection)
-    }, [artist, collection])
-
     function getBlockImage(post: any) {
         if (post.content) {
             const imageBlock = post.content.blocks.find((o: any) => o.type === 'image')
@@ -91,7 +87,7 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
             ) : (
                 <>
                     <section className="my-3">
-                        <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+                        <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4 grid-auto-rows">
                             {data?.pages.map((page, i) => (
                                 <React.Fragment key={i}>
                                     {page.docs.map((photo: any, index: number) => (
