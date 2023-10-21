@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export default function Card({ id, title, image, description, count, type }: any) {
     return (
-        <article className='h-80 w-80 xl:w-auto bg-gray-200 rounded-md relative flex flex-col overflow-hidden'>
+        <article className='h-80 xl:w-auto bg-gray-200 rounded-md relative flex flex-col overflow-hidden'>
             <span aria-hidden="true" className="absolute inset-0">
                 <Image
                     src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
