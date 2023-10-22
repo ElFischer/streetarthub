@@ -54,13 +54,13 @@ export async function getCollection(id: string): Promise<Collection | undefined>
     }
 }
 
-export async function getCollectionPosts(key?: string, name?: string): Promise<PostsFeed | undefined> {
+export async function getCollectionPosts(key?: string, name?: string, limitValue?: number): Promise<PostsFeed | undefined> {
     try {
         let fbResponse
         if (key) {
-            fbResponse = query(collection(db, "streetart"), limit(25), where('category', 'array-contains', name), startAfter(key));
+            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), where('category', 'array-contains', name), startAfter(key));
         } else {
-            fbResponse = query(collection(db, "streetart"), limit(25), where('category', 'array-contains', name));
+            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), where('category', 'array-contains', name));
         }
 
         const documentSnapshots = await getDocs(fbResponse);
