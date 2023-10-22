@@ -4,14 +4,13 @@ import { db } from '@/lib/firebase';
 import type { PostsFeed, Post } from "./models/Posts"
 import { PostSchema } from "./models/Posts"
 
-export async function postsNextBatch(key?: string): Promise<PostsFeed | undefined> {
-
+export async function postsNextBatch(key?: string, limitValue?: number): Promise<PostsFeed | undefined> {
     try {
         let fbResponse
         if (key) {
-            fbResponse = query(collection(db, "streetart"), limit(25), orderBy("createdAt", "desc"), startAfter(key));
+            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), orderBy("createdAt", "desc"), startAfter(key));
         } else {
-            fbResponse = query(collection(db, "streetart"), limit(25), orderBy("createdAt", "desc"));
+            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), orderBy("createdAt", "desc"));
         }
 
         const documentSnapshots = await getDocs(fbResponse);

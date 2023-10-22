@@ -42,14 +42,18 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
     } = useInfiniteQuery(
         [key],
         async ({ pageParam = null }) => {
+            let limit = 25
+            if(window.innerWidth < 640) {
+                limit = 5
+            }
             if (collection) {
-                const res = await getCollectionPosts(pageParam, collection)
+                const res = await getCollectionPosts(pageParam, collection, limit)
                 return res as PostsFeed
             } else if (artist) {
-                const res = await getArtistPosts(pageParam, artist)
+                const res = await getArtistPosts(pageParam, artist, limit)
                 return res as PostsFeed
             } else {
-                const res = await postsNextBatch(pageParam)
+                const res = await postsNextBatch(pageParam, limit)
                 return res as PostsFeed
             }
         },
@@ -87,11 +91,11 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
             ) : (
                 <>
                     <section className="my-3">
-                        <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4 grid-auto-rows">
+                        <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid-flow-row-dense">
                             {data?.pages.map((page, i) => (
                                 <React.Fragment key={i}>
                                     {page.docs.map((photo: any, index: number) => (
-                                        <Card key={index} id={photo.id} title={photo.title} image={getBlockImage(photo)} source={photo.source} />
+                                        <Card key={index} index={index} id={photo.id} title={photo.title} image={getBlockImage(photo)} source={photo.source} />
                                     ))}
                                 </React.Fragment>
                             ))}

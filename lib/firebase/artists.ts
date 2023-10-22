@@ -54,13 +54,13 @@ export async function getArtist(id: string): Promise<Artist | undefined> {
     }
 }
 
-export async function getArtistPosts(key?: string, name?: string): Promise<PostsFeed | undefined> {
+export async function getArtistPosts(key?: string, name?: string, limitValue?: number): Promise<PostsFeed | undefined> {
     try {
         let fbResponse
         if (key) {
-            fbResponse = query(collection(db, "streetart"), limit(25), where('artist', 'array-contains', name), startAfter(key));
+            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), where('artist', 'array-contains', name), startAfter(key));
         } else {
-            fbResponse = query(collection(db, "streetart"), limit(25), where('artist', 'array-contains', name));
+            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), where('artist', 'array-contains', name));
         }
 
         const documentSnapshots = await getDocs(fbResponse);
