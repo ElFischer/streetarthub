@@ -69,7 +69,7 @@ export default function Card({ id, title, image, description, count, type, sourc
 
             </article>
             <article className={`group relative sm:hidden`}>
-                {!isComplete && <div className="bg-gray-300 min-h-[20rem] rounded-lg"></div>}
+                {!isComplete && <div className="bg-gray-300 min-h-[15rem] animate-pulse rounded-lg"></div>}
                 <Link href={`${type ? type : '/art'}/${id}`}>
                     <NextImage
                         alt={title}
