@@ -8,6 +8,7 @@ export default function Card({ id, title, image, description, count, type, sourc
     const [aspectClassGrid, setAspectClassGrid] = useState<string | null>(null);
     const [aspectClassRatio, setAspectClassRatio] = useState<string | null>(null);
     const [aspectRatio, setAspectRatio] = useState(0);
+    const [isComplete, setIsComplete] = useState(false);
 
     useEffect(() => {
         const img = new Image();
@@ -68,22 +69,26 @@ export default function Card({ id, title, image, description, count, type, sourc
 
             </article>
             <article className={`group relative sm:hidden`}>
+                {!isComplete && <div className="bg-gray-300 min-h-[20rem] rounded-lg"></div>}
                 <Link href={`${type ? type : '/art'}/${id}`}>
-                    <div className="bg-gray-300 min-h-[14rem] lg:min-h-[10rem] xl:min-h-[15rem]">
-                        <NextImage
-                            alt={title}
-                            src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F${image}?alt=media`}
-                            width={0}
-                            height={0}
-                            sizes="100vw"
-                            className="rounded-lg group-hover:opacity-80"
-                            style={{ width: '100%', height: 'auto' }}
-                            placeholder='blur'
-                            blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
-                        />
-                    </div>
+                    <NextImage
+                        alt={title}
+                        src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F${image}?alt=media`}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        className="rounded-lg group-hover:opacity-80"
+                        style={{ width: '100%', height: 'auto' }}
+                        onLoadingComplete={() => setIsComplete(true)}
+                        placeholder='blur'
+                        blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
+                    />
                 </Link>
-                <p className="mt-1 text-sm text-gray-500">{title}</p>
+                <div className="mt-4 flex items-center justify-between space-x-8 font-medium text-gray-900">
+                    <Link href={`${type ? type : '/art'}/${id}`} className="text-sm font-semibold leading-none truncate w-full max-w-[calc(100%-2rem)]">
+                        {title}
+                    </Link>
+                </div>
             </article>
         </>
     )
