@@ -30,15 +30,15 @@ export default function Card({ id, title, image, description, count, type, sourc
                     setAspectClassGrid('col-span-2');
                 }
             } else {
-                setAspectClassGrid('row-span-2');
-                setAspectClassRatio('h-[32.375rem] lg:h-[24.375rem] xl:h-[34.375rem]');
+                setAspectClassGrid('sm:row-span-2');
+                setAspectClassRatio('h-[14rem] sm:h-[32.375rem] lg:h-[24.375rem] xl:h-[34.375rem]');
             }
         };
     }, [image, index]);
 
     return (
         <>
-            <article className={`group relative hidden sm:block ${aspectClassGrid}`}>
+            <article className={`group relative ${aspectClassGrid}`}>
                 <div className="group relative">
                     <div className={`${aspectClassRatio} min-h-[14rem] lg:min-h-[10rem] xl:min-h-[15rem] w-full overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75`}>
                         <Link href={`${type ? type : '/art'}/${id}`}>
@@ -73,29 +73,7 @@ export default function Card({ id, title, image, description, count, type, sourc
                 </div>
 
             </article>
-            <article className={`group relative sm:hidden`}>
-                <Link href={`${type ? type : '/art'}/${id}`}>
-                    <NextImage
-                        src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
-                        alt={title}
-                        height={height}
-                        width={width}
-                        className="rounded-lg"
-                        priority={true}
-                        onLoadingComplete={() => setIsComplete(true)}
-                        placeholder='blur'
-                        blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
-                    />
-                </Link>
-
-                {isComplete &&
-                    <div className="mt-4 flex items-center justify-between space-x-8 font-medium text-gray-900">
-                        <Link href={`${type ? type : '/art'}/${id}`} className="text-sm font-semibold leading-none truncate w-full max-w-[calc(100%-2rem)]">
-                            {title}
-                        </Link>
-                    </div>
-                }
-            </article>
+            
         </>
     )
 }
