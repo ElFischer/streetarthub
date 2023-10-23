@@ -91,7 +91,7 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
             ) : (
                 <>
                     <section className="my-3">
-                        <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 sm:gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid-flow-row-dense">
+                        <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 sm:gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 grid-flow-row-dense">
                             {data?.pages.map((page, i) => (
                                 <React.Fragment key={i}>
                                     {page.docs.map((photo: any, index: number) => (
