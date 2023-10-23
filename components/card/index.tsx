@@ -9,12 +9,17 @@ export default function Card({ id, title, image, description, count, type, sourc
     const [aspectClassRatio, setAspectClassRatio] = useState<string | null>(null);
     const [aspectRatio, setAspectRatio] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
+    const [height, setheight] = useState(0);
+    const [width, setWidth] = useState(0);
 
     useEffect(() => {
         const img = new Image();
         img.src = `https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`;
 
         img.onload = () => {
+            setWidth(img.width);
+            setheight(img.height);
+
             const aspectRatio = img.width / img.height;
             setAspectRatio(aspectRatio);
             if (aspectRatio > 0.7) {
@@ -69,26 +74,26 @@ export default function Card({ id, title, image, description, count, type, sourc
 
             </article>
             <article className={`group relative sm:hidden`}>
-                {!isComplete && <div className="bg-gray-300 min-h-[15rem] animate-pulse rounded-lg"></div>}
                 <Link href={`${type ? type : '/art'}/${id}`}>
                     <NextImage
+                        src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
                         alt={title}
-                        src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F${image}?alt=media`}
-                        width={0}
-                        height={0}
-                        sizes="100vw"
-                        className="rounded-lg group-hover:opacity-80"
-                        style={{ width: '100%', height: 'auto' }}
+                        height={height}
+                        width={width}
+                        className="rounded-lg"
+                        priority={true}
                         onLoadingComplete={() => setIsComplete(true)}
                         placeholder='blur'
                         blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
                     />
                 </Link>
-                <div className="mt-4 flex items-center justify-between space-x-8 font-medium text-gray-900">
-                    <Link href={`${type ? type : '/art'}/${id}`} className="text-sm font-semibold leading-none truncate w-full max-w-[calc(100%-2rem)]">
-                        {title}
-                    </Link>
-                </div>
+                {isComplete &&
+                    <div className="mt-4 flex items-center justify-between space-x-8 font-medium text-gray-900">
+                        <Link href={`${type ? type : '/art'}/${id}`} className="text-sm font-semibold leading-none truncate w-full max-w-[calc(100%-2rem)]">
+                            {title}
+                        </Link>
+                    </div>
+                }
             </article>
         </>
     )
