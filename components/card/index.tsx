@@ -30,7 +30,7 @@ export default function Card({ id, title, image, description, count, type, sourc
                     setAspectClassGrid('col-span-2');
                 }
             } else {
-                setAspectClassGrid('sm:row-span-2');
+                setAspectClassGrid('row-span-2');
                 setAspectClassRatio('h-[14rem] sm:h-[32.375rem] lg:h-[24.375rem] xl:h-[34.375rem]');
             }
         };
@@ -38,9 +38,9 @@ export default function Card({ id, title, image, description, count, type, sourc
 
     return (
         <>
-            <article className={`group relative ${aspectClassGrid}`}>
+            <article className={`group relative `}>
                 <div className="group relative">
-                    <div className={`${aspectClassRatio} min-h-[14rem] lg:min-h-[10rem] xl:min-h-[15rem] w-full overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75`}>
+                    <div className={`aspect-h-4 aspect-w-4 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75`}>
                         <Link href={`${type ? type : '/art'}/${id}`}>
                             <NextImage
                                 src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
