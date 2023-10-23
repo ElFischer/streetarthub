@@ -74,24 +74,19 @@ export default function Card({ id, title, image, description, count, type, sourc
 
             </article>
             <article className={`group relative sm:hidden`}>
-                <div className="relative bg-gray-300 rounded-lg">
-                    <div style={{ paddingBottom: `${(height / width) * 100}%` }}></div>
-                    <div className="absolute inset-0">
-                        <Link href={`${type ? type : '/art'}/${id}`}>
-                            <NextImage
-                                src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
-                                alt={title}
-                                height={height}
-                                width={width}
-                                className="rounded-lg"
-                                priority={true}
-                                onLoadingComplete={() => setIsComplete(true)}
-                                placeholder='blur'
-                                blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
-                            />
-                        </Link>
-                    </div>
-                </div>
+                <Link href={`${type ? type : '/art'}/${id}`}>
+                    <NextImage
+                        src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
+                        alt={title}
+                        height={height}
+                        width={width}
+                        className="rounded-lg"
+                        priority={true}
+                        onLoadingComplete={() => setIsComplete(true)}
+                        placeholder='blur'
+                        blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
+                    />
+                </Link>
 
                 {isComplete &&
                     <div className="mt-4 flex items-center justify-between space-x-8 font-medium text-gray-900">
