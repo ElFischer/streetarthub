@@ -82,7 +82,7 @@ function Feed() {
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
                 <>
-                    <section className="my-3 grid gap-5 grid-cols-mobile-gallery sm:grid-cols-gallery">
+                    <section className="my-3 grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                         {data?.pages.map((page, i) => (
                             <React.Fragment key={i}>
                                 {page.docs.map((artist: any, index: number) => (
