@@ -143,7 +143,13 @@ export function createDataColumns<T>(data: T[][] = [], columns = 3) {
             if (item) {
                 const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
                 result[shortestColumnIndex].push(item);
-                columnHeights[shortestColumnIndex] += item.cover[0].height; 
+                /* TODO */
+                if (item.cover) {
+                    columnHeights[shortestColumnIndex] += item.cover[0].height;
+                } else {
+                    columnHeights[shortestColumnIndex] += 450;
+                }
+
             }
         }
     }
