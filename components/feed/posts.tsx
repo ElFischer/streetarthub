@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Card from "@/components/card"
-
+import { Masonry } from '../masonry'
 import { postsNextBatch } from '@/lib/firebasePost'
 import { getCollectionPosts } from '@/lib/firebase/collections'
 import { getArtistPosts } from '@/lib/firebase/artists'
@@ -43,7 +43,7 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
         [key],
         async ({ pageParam = null }) => {
             let limit = 25
-            if(window.innerWidth < 640) {
+            if (window.innerWidth < 640) {
                 limit = 5
             }
             if (collection) {
@@ -91,15 +91,17 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
             ) : (
                 <>
                     <section className="my-3">
-                        <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 sm:gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 grid-flow-row-dense">
-                            {data?.pages.map((page, i) => (
-                                <React.Fragment key={i}>
-                                    {page.docs.map((photo: any, index: number) => (
-                                        <Card key={index} index={index} id={photo.id} title={photo.title} image={getBlockImage(photo)} source={photo.source} />
-                                    ))}
-                                </React.Fragment>
-                            ))}
-                        </div>
+                        <Masonry
+                            data={data}
+                            config={{
+                                columns: [1, 2, 3],
+                                gap: [24, 24, 24],
+                                media: [640, 1024, 1280],
+                            }}
+                            render={(item: any, idx) => (
+                                <Card key={idx} id={item.id} title={item.title} image={getBlockImage(item)} cover={item.cover} source={item.source} />
+                            )}
+                        />
                         {data?.pages && data.pages.length < 25 && (
                             <div className="flex justify-center mt-20">
                                 {isFetching && !isFetchingNextPage
