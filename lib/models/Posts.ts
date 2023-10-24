@@ -1,6 +1,13 @@
 import * as z from "zod"
 import { UserSchema } from "./User"
 
+export const CoverSchema = z.object({
+    url: z.string().optional(),
+    height: z.number().optional(),
+    width: z.number().optional(),
+})
+
+
 export const PostSchema = z.object({
     id: z.string(),
     title: z.string(),
@@ -26,6 +33,7 @@ export const PostSchema = z.object({
     updatedAt: z.any().optional(),
     approved: z.boolean(),
     artist: z.array(z.string()).optional(),
+    cover: z.array(z.object(CoverSchema.shape)).optional(),
     category: z.array(z.string()).optional(),
     author: z.object(UserSchema.shape).optional(),
     description: z.string().optional(),
