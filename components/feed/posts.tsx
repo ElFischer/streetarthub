@@ -42,7 +42,7 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
     } = useInfiniteQuery(
         [key],
         async ({ pageParam = null }) => {
-            let limit = 25
+            let limit = 15
             if (window.innerWidth < 640) {
                 limit = 5
             }
