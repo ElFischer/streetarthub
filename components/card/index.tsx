@@ -45,7 +45,6 @@ export default function Card({ id, title, image, description, count, media, type
                     {media && media.length > 1 ? (
                         <div className="group relative">
                             <ImageGallery images={media} />
-
                         </div>
                     ) : (
                         <Link href={`${type ? type : '/art'}/${id}`}>
