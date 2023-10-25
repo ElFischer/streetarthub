@@ -99,7 +99,7 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
                                 media: [640, 1024, 1280],
                             }}
                             render={(item: any, idx) => (
-                                <Card key={idx} id={item.id} title={item.title} image={getBlockImage(item)} cover={item.cover} source={item.source} />
+                                <Card key={idx} id={item.id} title={item.title} image={getBlockImage(item)} cover={item.cover} source={item.source} media={item.media} />
                             )}
                         />
                         {data?.pages && data.pages.length < 25 && (
