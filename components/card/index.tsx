@@ -48,8 +48,8 @@ export default function Card({ id, title, image, description, count, media, type
 
                         </div>
                     ) : (
-                        <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted group-hover:opacity-75">
-                            <Link href={`${type ? type : '/art'}/${id}`}>
+                        <Link href={`${type ? type : '/art'}/${id}`}>
+                            <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative group-hover:opacity-75">
                                 <NextImage
                                     src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
                                     alt={title}
@@ -61,8 +61,8 @@ export default function Card({ id, title, image, description, count, media, type
                                     blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
                                 />
                                 <span className="sr-only">View Article</span>
-                            </Link>
-                        </AspectRatio>
+                            </AspectRatio>
+                        </Link>
                     )}
 
                     <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 z-40" aria-hidden="true">

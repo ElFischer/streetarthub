@@ -56,9 +56,12 @@ export const ImageGallery = ({ images }: any) => {
                                     <Image
                                         src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F${images[p]}?alt=media`}
                                         alt={`Gallery Image ${p}`}
+                                        fill={true}
                                         sizes="450px"
-                                        layout="fill"
-                                        className="object-cover object-center rounded-lg"
+                                        className="rounded-lg object-cover object-center"
+                                        priority={true}
+                                        placeholder='blur'
+                                        blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
                                     />
                                 </motion.div>
                             )
