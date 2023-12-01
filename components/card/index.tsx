@@ -5,6 +5,10 @@ import { Button } from "../ui/button";
 import { Icons } from "../icons";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "@/lib/firebase";
+
+import { Dialog, DialogTrigger, DialogContent, DialogClose } from "@/components/ui/dialog";
+import useDialogWithRouting from '@/hooks/useDialogWithRouting';
+
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { ImageGallery } from "./image-gallery";
 
@@ -37,7 +41,7 @@ export default function Card({ id, title, image, description, count, media, type
             }
         }; */
     }, [image, index]);
-
+    const { isOpen, openDialog, closeDialog } = useDialogWithRouting(id);
     return (
         <>
             <article className={`group relative `}>
@@ -47,21 +51,20 @@ export default function Card({ id, title, image, description, count, media, type
                             <ImageGallery images={media} type={type} id={id} />
                         </div>
                     ) : (
-                        <Link href={`${type ? type : '/art'}/${id}`}>
-                            <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative group-hover:opacity-75">
-                                <NextImage
-                                    src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
-                                    alt={title}
-                                    fill={true}
-                                    sizes="450px"
-                                    className="rounded-lg object-cover object-center"
-                                    priority={true}
-                                    placeholder='blur'
-                                    blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
-                                />
-                                <span className="sr-only">View Article</span>
-                            </AspectRatio>
-                        </Link>
+                        <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative group-hover:opacity-75">
+                            <NextImage
+                                src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
+                                alt={title}
+                                fill={true}
+                                sizes="450px"
+                                className="rounded-lg object-cover object-center cursor-pointer"
+                                onClick={openDialog}
+                                priority={true}
+                                placeholder='blur'
+                                blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
+                            />
+                            <span className="sr-only">View Article</span>
+                        </AspectRatio>
                     )}
 
                     <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 z-40" aria-hidden="true">
@@ -81,6 +84,20 @@ export default function Card({ id, title, image, description, count, media, type
                     </Link>
                 </div>
             </article >
+            <Dialog open={isOpen} onOpenChange={closeDialog}>
+                    <DialogContent className="flex justify-center">
+                        <NextImage
+                            src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F${image}?alt=media`}
+                            alt={title}
+                            width={960}
+                            height={960}
+                            className="rounded-lg object-cover object-center"
+                            priority={true}
+                            placeholder='blur'
+                            blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
+                        />
+                    </DialogContent>
+            </Dialog>
         </>
     )
 }
