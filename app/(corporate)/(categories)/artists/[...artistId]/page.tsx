@@ -3,7 +3,6 @@ import Feed from "@/components/feed/posts"
 
 async function getPostFromParams(params: any) {
     const id = params?.artistId?.join("/")
-    console.log(decodeURIComponent(id))
     const artist = await getArtist(decodeURIComponent(id))
     if (!artist) {
         null
