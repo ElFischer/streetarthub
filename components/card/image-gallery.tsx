@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import Image from 'next/image';
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { Icons } from "../icons";
 
@@ -11,7 +12,7 @@ const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
 };
 
-export const ImageGallery = ({ images }: any) => {
+export const ImageGallery = ({ images, type, id }: any) => {
 
     const [[page, direction], setPage] = useState([0, 0]);
 
@@ -51,18 +52,20 @@ export const ImageGallery = ({ images }: any) => {
                                             paginate(-1);
                                         }
                                     }}
-                                    className={`absolute inset-0 ${p === page ? 'z-10' : 'z-0'}`}
+                                    
                                 >
-                                    <Image
-                                        src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F${images[p]}?alt=media`}
-                                        alt={`Gallery Image ${p}`}
-                                        fill={true}
-                                        sizes="450px"
-                                        className="rounded-lg object-cover object-center"
-                                        priority={true}
-                                        placeholder='blur'
-                                        blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
-                                    />
+                                    <Link href={`${type ? type : '/art'}/${id}`} className={`absolute inset-0 ${p === page ? 'z-10' : 'z-0'}`}>
+                                        <Image
+                                            src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F${images[p]}?alt=media`}
+                                            alt={`Gallery Image ${p}`}
+                                            fill={true}
+                                            sizes="450px"
+                                            className="rounded-lg object-cover object-center"
+                                            priority={true}
+                                            placeholder='blur'
+                                            blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
+                                        />
+                                    </Link>
                                 </motion.div>
                             )
                         ))}

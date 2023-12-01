@@ -71,8 +71,6 @@ export async function getPost(id: string): Promise<Post | undefined> {
 
         if (docSnap.exists()) {
             const validatedData = PostSchema.parse(docSnap.data());
-            console.log(validatedData)
-
             return validatedData
         } else {
             // docSnap.data() will be undefined in this case

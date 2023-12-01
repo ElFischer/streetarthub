@@ -8,6 +8,7 @@ export function useMediaValues(
     const [values, setValues] = React.useState({ columns: 1, gap: 1 });
 
     React.useEffect(() => {
+
         if (!medias) {
             setValues({ columns: columns[0], gap: gap[0] });
             return;
@@ -44,7 +45,7 @@ export function useMediaValues(
                 mediaQuery.removeEventListener("change", onSizeChange);
             }
         };
-    }, [values.columns, values.gap]);
+    }, [values.columns, values.gap, columns, gap, medias]);
 
     return values;
 }
@@ -69,6 +70,7 @@ export function Masonry<T>({
     config,
     ...rest
 }: MasonryProps<T>) {
+    const [isLoaded, setIsLoaded] = React.useState<boolean>(false);
     const { columns, gap } = useMediaValues(
         config.media,
         createSafeArray(config.columns),
@@ -82,6 +84,16 @@ export function Masonry<T>({
 
     const chunks = createChunks<T>(items, columns);
     const dataColumns = createDataColumns<T>(chunks, columns);
+
+    React.useEffect(() => {
+        if (columns && gap) {
+            setIsLoaded(true);
+        }
+    }, [columns, gap]);
+
+    if (!isLoaded) {
+        return null;
+    }
 
     return (
         <div

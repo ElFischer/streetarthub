@@ -68,7 +68,6 @@ export function Editor({ post }: EditorProps) {
                                     // upload to firebase storage
                                     const date = new Date();
                                     const res = await uploadFile(file, `art/${post.id}_${date.getTime()}`)
-                                    console.log(res)
                                     return {
                                         success: 1,
                                         file: {
