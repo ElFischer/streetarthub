@@ -11,7 +11,7 @@ import { cn, formatDate } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 
-import BackButton from "@/components/back-button"
+import BackButton, { SimpleBack } from "@/components/back-button"
 
 interface PostPageProps {
   params: {
@@ -145,10 +145,7 @@ export default async function PostPage({ params }: PostPageProps) {
       <hr className="mt-12" />
       <EditorOutput content={post?.content} />
       <div className="flex justify-center py-6 lg:py-10">
-        <Link href="/art" className={cn(buttonVariants({ variant: "ghost" }))}>
-          <Icons.chevronLeft className="mr-2 h-4 w-4" />
-          See all posts
-        </Link>
+        <SimpleBack />
       </div>
     </article >
   )
