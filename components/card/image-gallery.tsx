@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import Image from 'next/image';
@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { Icons } from "../icons";
 import { is } from "date-fns/locale";
 
-const swipeConfidenceThreshold = 10000;
+const swipeConfidenceThreshold = 5000;
 const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
 };
@@ -16,18 +16,7 @@ const swipePower = (offset: number, velocity: number) => {
 export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: any) => {
 
     const [[page, direction], setPage] = useState([0, 0]);
-    const [allowScroll, setAllowScroll] = useState(false)
-    useEffect(() => {
-        if (allowScroll) {
-            const handleTouch = (event: any) => {
-                event.stopPropagation()
-            }
-            document.documentElement.addEventListener('touchmove', handleTouch)
-            return () => {
-                document.documentElement.removeEventListener('touchmove', handleTouch)
-            }
-        }
-    }, [allowScroll])
+
     const paginate = (newDirection: number) => {
         const nextPage = page + newDirection;
 
@@ -56,9 +45,6 @@ export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: an
                                     dragConstraints={{ left: 0, right: 0 }}
                                     dragElastic={1}
                                     dragPropagation={false}
-                                    onDragStart={(event, info) => {
-                                        setAllowScroll(Math.abs(info.delta.y) > Math.abs(info.delta.x))
-                                    }}
                                     onDragEnd={(e, { offset, velocity }) => {
                                         const swipe = swipePower(offset.x, velocity.x);
 
@@ -68,7 +54,7 @@ export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: an
                                             paginate(-1);
                                         }
                                     }}
-
+                                    
                                 >
                                     <div className={`absolute inset-0 ${p === page ? 'z-10' : 'z-0'}`}>
                                         <Image
