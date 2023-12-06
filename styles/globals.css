@@ -86,6 +86,10 @@
   overflow-y: auto;
 }
 
+.DialogOverlay *:focus {
+  outline: none;
+}
+
 @layer base {
   * {
     @apply border-border;
