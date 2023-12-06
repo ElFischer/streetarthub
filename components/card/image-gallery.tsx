@@ -38,7 +38,7 @@ export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: an
                                     animate={{ x: p === page ? '0%' : p < page ? '-100%' : '100%' }}
                                     exit={{ x: p < page ? '-100%' : '100%' }}
                                     transition={{
-                                        x: { type: "spring", stiffness: 200, damping: 20 },
+                                        x: { type: "spring", stiffness: 300, damping: 30 },
                                         opacity: { duration: 0.2 }
                                     }}
                                     drag="x"
