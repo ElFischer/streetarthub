@@ -28,7 +28,7 @@ export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: an
     return (
         <>
             <div className="group relative">
-                <div className="aspect-h-4 aspect-w-4 flex justify-center align-middle overflow-hidden bg-background rounded-lg">
+                <div className="aspect-h-4 aspect-w-4 flex justify-center align-middle overflow-hidden bg-background">
                     <AnimatePresence initial={false} custom={direction}>
                         {[page - 1, page, page + 1].map((p) => (
                             images[p] && (
@@ -61,7 +61,7 @@ export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: an
                                             alt={`Gallery Image ${p}`}
                                             fill={true}
                                             sizes="450px"
-                                            className={`rounded-lg object-cover object-center ${isClickable ? 'cursor-pointer' : ''}`}
+                                            className={`sm:rounded-lg object-cover object-center ${isClickable ? 'cursor-pointer' : ''}`}
                                             priority={true}
                                             onClick={isClickable ? () => onImageClick() : undefined}
                                             placeholder='blur'

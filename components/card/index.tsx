@@ -79,7 +79,7 @@ export default function Card({ id, title, image, description, count, media, type
                       alt={title}
                       fill={true}
                       sizes="450px"
-                      className="rounded-lg object-cover object-center cursor-pointer"
+                      className="sm:rounded-lg object-cover object-center cursor-pointer"
                       onClick={openDialog}
                       priority={true}
                       placeholder='blur'
@@ -107,7 +107,7 @@ export default function Card({ id, title, image, description, count, media, type
           )}
 
         </div>
-        <div className="mt-4 flex items-center justify-between space-x-8 font-medium text-gray-900">
+        <div className="mt-4 flex items-center justify-between space-x-8 font-medium text-gray-900 sm:px-0 px-8">
           <Link href={`${type ? type : '/art'}/${id}`} className="text-sm font-semibold leading-none truncate w-full max-w-[calc(100%-2rem)]">
             {title}
           </Link>
@@ -127,7 +127,7 @@ export default function Card({ id, title, image, description, count, media, type
                 alt={title}
                 fill={true}
                 sizes="450px"
-                className="rounded-lg object-cover object-center"
+                className="sm:rounded-lg object-cover object-center"
                 placeholder='blur'
                 blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
               />
