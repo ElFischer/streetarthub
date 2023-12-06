@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { Icons } from "../icons";
 import { is } from "date-fns/locale";
 
-const swipeConfidenceThreshold = 5000;
+const swipeConfidenceThreshold = 500;
 const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
 };
@@ -45,6 +45,7 @@ export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: an
                                     dragConstraints={{ left: 0, right: 0 }}
                                     dragElastic={1}
                                     dragPropagation={false}
+                                    dragDirectionLock={true}
                                     onDragEnd={(e, { offset, velocity }) => {
                                         const swipe = swipePower(offset.x, velocity.x);
 
