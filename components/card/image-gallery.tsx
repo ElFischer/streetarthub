@@ -6,13 +6,14 @@ import Image from 'next/image';
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { Icons } from "../icons";
+import { is } from "date-fns/locale";
 
 const swipeConfidenceThreshold = 10000;
 const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
 };
 
-export const ImageGallery = ({ images, type, id }: any) => {
+export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: any) => {
 
     const [[page, direction], setPage] = useState([0, 0]);
 
@@ -54,18 +55,19 @@ export const ImageGallery = ({ images, type, id }: any) => {
                                     }}
                                     
                                 >
-                                    <Link href={`${type ? type : '/art'}/${id}`} className={`absolute inset-0 ${p === page ? 'z-10' : 'z-0'}`}>
+                                    <div className={`absolute inset-0 ${p === page ? 'z-10' : 'z-0'}`}>
                                         <Image
                                             src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F${images[p]}?alt=media`}
                                             alt={`Gallery Image ${p}`}
                                             fill={true}
                                             sizes="450px"
-                                            className="rounded-lg object-cover object-center"
+                                            className={`rounded-lg object-cover object-center ${isClickable ? 'cursor-pointer' : ''}`}
                                             priority={true}
+                                            onClick={isClickable ? () => onImageClick() : undefined}
                                             placeholder='blur'
                                             blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
                                         />
-                                    </Link>
+                                    </div>
                                 </motion.div>
                             )
                         ))}

@@ -51,7 +51,7 @@ export default function Card({ id, title, image, description, count, media, type
         <div className="group relative">
           {media && media.length > 1 ? (
             <div className="group relative">
-              <ImageGallery images={media} type={type} id={id} />
+              <ImageGallery images={media} type={type} id={id} onImageClick={openDialog} isClickable={true} />
             </div>
           ) : (
             <>
@@ -116,18 +116,24 @@ export default function Card({ id, title, image, description, count, media, type
       <Dialog open={isOpen} onOpenChange={closeDialog}>
         <DialogContent className="flex flex-col justify-center py-6 lg:py-10 ">
           <ContentBlock post={post} className="pb-5" />
-          <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative group-hover:opacity-75">
-            <NextImage
-              src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
-              alt={title}
-              fill={true}
-              sizes="450px"
-              className="rounded-lg object-cover object-center cursor-pointer"
-              placeholder='blur'
-              blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
-            />
-            <span className="sr-only">View Article</span>
-          </AspectRatio>
+          {media && media.length > 1 ? (
+            <div className="group relative">
+              <ImageGallery images={media} type={type} id={id} isClickable={false} />
+            </div>
+          ) : (
+            <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative group-hover:opacity-75">
+              <NextImage
+                src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
+                alt={title}
+                fill={true}
+                sizes="450px"
+                className="rounded-lg object-cover object-center"
+                placeholder='blur'
+                blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
+              />
+              <span className="sr-only">View Article</span>
+            </AspectRatio>
+          )}
         </DialogContent>
       </Dialog>
     </>
