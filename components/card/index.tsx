@@ -58,7 +58,7 @@ export default function Card({ id, title, image, description, count, media, type
               {
                 type ? (
                   <Link href={`${type ? type : '/art'}/${id}`}>
-                    <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative group-hover:opacity-75">
+                    <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative sm:group-hover:opacity-75">
                       <NextImage
                         src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
                         alt={title}
@@ -73,7 +73,7 @@ export default function Card({ id, title, image, description, count, media, type
                     </AspectRatio>
                   </Link>
                 ) : (
-                  <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative group-hover:opacity-75">
+                  <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative sm:group-hover:opacity-75">
                     <NextImage
                       src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
                       alt={title}
@@ -121,7 +121,7 @@ export default function Card({ id, title, image, description, count, media, type
               <ImageGallery images={media} type={type} id={id} isClickable={false} />
             </div>
           ) : (
-            <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative group-hover:opacity-75">
+            <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative sm:group-hover:opacity-75">
               <NextImage
                 src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
                 alt={title}
