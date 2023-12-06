@@ -48,13 +48,13 @@ export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: an
                                     onDragEnd={(e, { offset, velocity }) => {
                                         const swipe = swipePower(offset.x, velocity.x);
 
-                                        if (Math.abs(offset.y) < 10 && swipe < -swipeConfidenceThreshold) {
+                                        if (swipe < -swipeConfidenceThreshold) {
                                             paginate(1);
-                                        } else if (Math.abs(offset.y) < 10 && swipe > swipeConfidenceThreshold) {
+                                        } else if (swipe > swipeConfidenceThreshold) {
                                             paginate(-1);
                                         }
                                     }}
-
+                                    
                                 >
                                     <div className={`absolute inset-0 ${p === page ? 'z-10' : 'z-0'}`}>
                                         <Image
