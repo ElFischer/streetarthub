@@ -17,6 +17,7 @@ import {
 } from '@tanstack/react-query'
 import { Icons } from '@/components/icons'
 import { Button } from '../ui/button'
+import { Skeleton } from "@/components/ui/skeleton";
 
 const queryClient = new QueryClient()
 
@@ -84,10 +85,19 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
         return <span>Error: {error.message}</span>
     }
 
+    const skeletons = Array.from({ length: 9 });
+
     return (
         <div>
             {status === 'loading' ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <div className="my-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {skeletons.map((_, index) => (
+                        <div key={index} className="space-y-3">
+                            <Skeleton className="h-60" />
+                            <Skeleton className="h-4 w-4/5" />
+                        </div>
+                    ))}
+                </div>
             ) : (
                 <>
                     <section className="my-3">
