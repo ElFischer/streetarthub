@@ -15,6 +15,7 @@ import { ImageGallery } from "./image-gallery";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ContentBlock from "./content-block";
+import UserBlock from "./user-block";
 
 export default function Card({ id, title, image, description, count, media, type, source, index, cover, post }: any) {
 
@@ -49,50 +50,49 @@ export default function Card({ id, title, image, description, count, media, type
     <>
       <article className={`group relative `}>
         <div className="group relative">
-          {media && media.length > 1 ? (
-            <div className="group relative">
-              <ImageGallery images={media} type={type} id={id} onImageClick={openDialog} isClickable={true} />
-            </div>
+          {type ? (
+            <Link href={`${type ? type : '/art'}/${id}`}>
+              <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative sm:group-hover:opacity-75">
+                <NextImage
+                  src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
+                  alt={title}
+                  fill={true}
+                  sizes="450px"
+                  className="rounded-lg object-cover object-center cursor-pointer"
+                  priority={true}
+                  placeholder='blur'
+                  blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
+                />
+                <span className="sr-only">View Article</span>
+              </AspectRatio>
+            </Link>
           ) : (
             <>
-              {
-                type ? (
-                  <Link href={`${type ? type : '/art'}/${id}`}>
-                    <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative sm:group-hover:opacity-75">
-                      <NextImage
-                        src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
-                        alt={title}
-                        fill={true}
-                        sizes="450px"
-                        className="rounded-lg object-cover object-center cursor-pointer"
-                        priority={true}
-                        placeholder='blur'
-                        blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
-                      />
-                      <span className="sr-only">View Article</span>
-                    </AspectRatio>
-                  </Link>
-                ) : (
-                  <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative sm:group-hover:opacity-75">
-                    <NextImage
-                      src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
-                      alt={title}
-                      fill={true}
-                      sizes="450px"
-                      className="sm:rounded-lg object-cover object-center cursor-pointer"
-                      onClick={openDialog}
-                      priority={true}
-                      placeholder='blur'
-                      blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
-                    />
-                    <span className="sr-only">View Article</span>
-                  </AspectRatio>
-                )}
-            </>
+              {media && media.length > 1 ? (
+                <div className="group relative">
+                  <ImageGallery images={media} type={type} id={id} onImageClick={openDialog} isClickable={true} />
+                </div>
+              ) : (
+                <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative">
+                  <NextImage
+                    src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_500_${image}?alt=media`}
+                    alt={title}
+                    fill={true}
+                    sizes="450px"
+                    className="sm:rounded-lg object-cover object-center"
+                    onClick={openDialog}
+                    priority={true}
+                    placeholder='blur'
+                    blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=`}
+                  />
+                  <span className="sr-only">View Article</span>
+                </AspectRatio>
+              )}
+              <div className="hidden sm:block absolute inset-0 bg-black bg-opacity-10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg cursor-pointer" onClick={openDialog}></div>
 
-          )}
-          {!type && (
-            <>
+              <div className="hidden sm:block absolute top-0 left-0 p-4 opacity-0 group-hover:opacity-100 z-40" aria-hidden="true">
+                <UserBlock post={post} />
+              </div>
               <div className="hidden sm:block absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 z-40" aria-hidden="true">
                 <Button variant={'ghost'} size="icon" className="rounded-md bg-white bg-opacity-75 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter"><Icons.heart className="h-4 w-4" /></Button>
               </div>
@@ -103,7 +103,9 @@ export default function Card({ id, title, image, description, count, media, type
                   </Link>
                 </div>
               )}
+
             </>
+
           )}
 
         </div>
