@@ -86,13 +86,13 @@ export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: an
                 </div>
                 {page !== 0 && (
                     <div className="hidden sm:block absolute left-0 top-1/2 transform -translate-y-1/2 p-4 z-10 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100">
-                        <Button onClick={() => paginate(-1)} variant={'ghost'} size="icon" className="rounded-full bg-white bg-opacity-75 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter"><Icons.chevronLeft className="h-4 w-4" /></Button>
+                        <Button onClick={() => paginate(-1)} variant={'ghost'} size="icon" className="rounded-full bg-white bg-opacity-75 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter focus-visible:ring-0"><Icons.chevronLeft className="h-4 w-4" /></Button>
                     </div>
                 )}
 
                 {page !== images.length - 1 && (
                     <div className="hidden sm:block absolute right-0 top-1/2 transform -translate-y-1/2 p-4 z-10 transition-opacity duration-150 ease-in-out opacity-0 group-hover:opacity-100">
-                        <Button onClick={() => paginate(1)} variant={'ghost'} size="icon" className="rounded-full bg-white bg-opacity-75 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter"><Icons.chevronRight className="h-4 w-4" /></Button>
+                        <Button onClick={() => paginate(1)} variant={'ghost'} size="icon" className="rounded-full bg-white bg-opacity-75 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter focus-visible:ring-0"><Icons.chevronRight className="h-4 w-4" /></Button>
                     </div>
                 )}
             </div>
