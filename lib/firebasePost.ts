@@ -4,66 +4,6 @@ import { db } from '@/lib/firebase';
 import type { PostsFeed, Post } from "./models/Posts"
 import { PostSchema } from "./models/Posts"
 
-export async function postsNextBatch(key?: string, limitValue?: number): Promise<PostsFeed | undefined> {
-    try {
-        let fbResponse
-        if (key) {
-            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), orderBy("createdAt", "desc"), startAfter(key));
-        } else {
-            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), orderBy("createdAt", "desc"));
-        }
-
-        const documentSnapshots = await getDocs(fbResponse);
-
-        const docs = documentSnapshots.docs.map(doc => {
-            const postData = doc.data();
-            const validatedData = PostSchema.parse(postData);
-
-            /* let newItemData = { ...validatedData, updatedAt: Timestamp.fromDate(new Date()), createdAt: Timestamp.fromDate(new Date()) }
-            updatePost(newItemData, doc.id).then((res) => {
-                console.log(res)
-            }).catch((err) => {
-                console.log(err)
-            }) */
-
-            return { ...validatedData, id: doc.id };
-        });
-
-        const data: PostsFeed = {
-            docs,
-            lastVisible: documentSnapshots.docs[documentSnapshots.docs.length - 1]
-        }
-
-        return data
-    } catch (error) {
-        if (error instanceof Error) console.log(error.stack)
-    }
-}
-
-export async function getPosts(filter?: any): Promise<PostsFeed | undefined> {
-    try {
-        let fbResponse
-        fbResponse = query(collection(db, "streetart"), where("author.id", "==", filter.where.authorId), limit(25));
-
-        const documentSnapshots = await getDocs(fbResponse);
-
-        const docs = documentSnapshots.docs.map(doc => {
-            const postData = doc.data();
-            const validatedData = PostSchema.parse(postData);
-            return { ...validatedData, id: doc.id };
-        });
-
-        const data: PostsFeed = {
-            docs,
-            lastVisible: documentSnapshots.docs[documentSnapshots.docs.length - 1]
-        }
-
-        return data
-    } catch (error) {
-        if (error instanceof Error) console.log(error.stack)
-    }
-}
-
 export async function getPost(id: string): Promise<Post | undefined> {
     try {
         let fbResponse = doc(db, "streetart", id);

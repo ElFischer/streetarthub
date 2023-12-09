@@ -53,31 +53,3 @@ export async function getArtist(id: string): Promise<Artist | undefined> {
         if (error instanceof Error) console.log(error.stack)
     }
 }
-
-export async function getArtistPosts(key?: string, name?: string, limitValue?: number): Promise<PostsFeed | undefined> {
-    try {
-        let fbResponse
-        if (key) {
-            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), where('artist', 'array-contains', name), startAfter(key));
-        } else {
-            fbResponse = query(collection(db, "streetart"), limit(limitValue ? limitValue : 25), where('artist', 'array-contains', name));
-        }
-
-        const documentSnapshots = await getDocs(fbResponse);
-
-        const docs = documentSnapshots.docs.map(doc => {
-            const postData = doc.data();
-            const validatedData = PostSchema.parse(postData);
-            return { ...validatedData, id: doc.id };
-        });
-
-        const data: PostsFeed = {
-            docs,
-            lastVisible: documentSnapshots.docs[documentSnapshots.docs.length - 1]
-        }
-
-        return data
-    } catch (error) {
-        if (error instanceof Error) console.log(error.stack)
-    }
-}
