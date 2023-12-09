@@ -11,10 +11,6 @@ export const metadata = {
 export default async function ProfilePage() {
   const user = await getCurrentUser()
 
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
-
   return (
     <>
       <TitleImage user={user}/>
