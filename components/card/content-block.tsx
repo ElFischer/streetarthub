@@ -6,14 +6,7 @@ const Content = ({ post }: any) => {
   return (
     <div>
       <div>
-        {post.date && (
-          <time
-            dateTime={formatDate(post.date)}
-            className="block text-sm text-muted-foreground"
-          >
-            Published on {formatDate(post.date)}
-          </time>
-        )}
+
         <h1 className="mt-2 inline-block font-heading text-4xl leading-tight lg:text-5xl">
           {post.title}
         </h1>
@@ -31,9 +24,16 @@ const Content = ({ post }: any) => {
                 className="rounded-full bg-white"
               />
               <div className="flex-1 text-left leading-tight">
-                <p className="font-medium">{post.author.name}</p>
+                <p className="font-bold text-md">{post.author.name}</p>
                 <p className="text-[12px] text-muted-foreground">
-                  @{post.author.id}
+                  {post.date && (
+                    <time
+                      dateTime={formatDate(post.date)}
+                      className="block "
+                    >
+                      {formatDate(post.date)}
+                    </time>
+                  )}
                 </p>
               </div>
             </Link>

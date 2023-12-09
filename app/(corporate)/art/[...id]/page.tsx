@@ -96,14 +96,7 @@ export default async function PostPage({ params }: PostPageProps) {
     <article className="container relative max-w-3xl py-6 lg:py-10">
       <BackButton />
       <div>
-        {post.date && (
-          <time
-            dateTime={formatDate(post.date)}
-            className="block text-sm text-muted-foreground"
-          >
-            Published on {formatDate(post.date)}
-          </time>
-        )}
+
         <h1 className="mt-2 inline-block font-heading text-4xl leading-tight lg:text-5xl">
           {post.title}
         </h1>
@@ -123,7 +116,14 @@ export default async function PostPage({ params }: PostPageProps) {
               <div className="flex-1 text-left leading-tight">
                 <p className="font-medium">{post.author.name}</p>
                 <p className="text-[12px] text-muted-foreground">
-                  @{post.author.id}
+                  {post.date && (
+                    <time
+                      dateTime={formatDate(post.date)}
+                      className="block text-sm text-muted-foreground"
+                    >
+                      {formatDate(post.date)}
+                    </time>
+                  )}
                 </p>
               </div>
             </Link>
@@ -136,7 +136,7 @@ export default async function PostPage({ params }: PostPageProps) {
           alt={post.title}
           width={720}
           height={405}
-          className="my-8 rounded-md border bg-muted transition-colors"
+          className="my-8 rounded-lg border bg-muted transition-colors"
           priority
         />
       )}
