@@ -37,7 +37,9 @@ export default async function ProfilePage({ params }: UserPageProps) {
   return (
     <>
       <TitleImage user={user} />
-      <Feed user={user.id} />
+      <div className="container">
+        <Feed user={user.id} />
+      </div>
     </>
   )
 }
