@@ -63,6 +63,10 @@ export const footerNavigation: FooterConfig = {
       href: 'https://www.pinterest.de/streetarthub/',
       icon: "pinterestSM",
     },
-    
+    {
+      name: 'Patreon',
+      href: 'https://www.patreon.com/streetarthub',
+      icon: "patreonSM",
+    },
   ],
 }
