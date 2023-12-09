@@ -26,7 +26,6 @@ async function getPostFromParams(params: any) {
     null
   }
   return post
-
 }
 
 /* export async function generateMetadata({
