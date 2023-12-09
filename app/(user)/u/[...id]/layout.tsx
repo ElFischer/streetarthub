@@ -50,7 +50,7 @@ export default async function CorporateLayout({
           )}
         </div>
       </header>
-      <main className="flex-1 container">{children}</main>
+      <main>{children}</main>
       <SiteFooter />
     </div>
   )
