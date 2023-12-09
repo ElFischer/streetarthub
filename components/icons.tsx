@@ -25,6 +25,7 @@ import {
   SunMedium,
   Trash,
   Twitter,
+  Share2,
   User,
   X
 } from "lucide-react"
@@ -53,6 +54,7 @@ export const Icons = {
   help: HelpCircle,
   pizza: Pizza,
   sun: SunMedium,
+  share: Share2,
   moon: Moon,
   laptop: Laptop,
   gitHub: ({ ...props }: LucideProps) => (
