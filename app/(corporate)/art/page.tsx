@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import Feed from "@/components/infinite"
+import Feed from "@/components/feed/posts"
 import { compareDesc } from "date-fns"
 
 import { formatDate } from "@/lib/utils"

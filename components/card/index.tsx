@@ -75,7 +75,7 @@ export default function Card({ id, title, image, description, count, media, type
               ) : (
                 <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative">
                   <NextImage
-                    src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
+                    src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F${image}?alt=media`}
                     alt={title}
                     fill={true}
                     sizes="450px"
@@ -125,7 +125,7 @@ export default function Card({ id, title, image, description, count, media, type
           ) : (
             <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative sm:group-hover:opacity-75">
               <NextImage
-                src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_500_${image}?alt=media`}
+                src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F${image}?alt=media`}
                 alt={title}
                 fill={true}
                 sizes="450px"

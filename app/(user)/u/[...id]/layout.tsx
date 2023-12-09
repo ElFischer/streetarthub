@@ -21,9 +21,9 @@ export default async function CorporateLayout({
 
   const user = await getCurrentUser()
 
-  /* if (!user) {
+  if (!user) {
     return notFound()
-  } */
+  }
 
   return (
     <div className="flex min-h-screen flex-col">

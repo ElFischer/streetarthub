@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 
 import { authOptions } from "@/lib/auth"
 
-import { getPosts } from '@/lib/firebasePost'
+import { fetchPosts } from '@/lib/firebase/posts'
 import type { PostsFeed } from "@/lib/models/Posts"
 
 import { getCurrentUser } from "@/lib/session"
@@ -22,14 +22,13 @@ export default async function DashboardPage() {
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login")
   }
-  const posts = await getPosts({
-    where: {
-      authorId: user.id,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-  })
+
+  const filterField = 'author.id'
+  const filterValue = user.id
+  const filterOperator = '=='
+  const limit = 15
+
+  const posts = await fetchPosts({ limitValue: limit, filterField, filterValue, filterOperator })
 
   return (
     <DashboardShell>
@@ -40,9 +39,7 @@ export default async function DashboardPage() {
         {posts?.docs?.length ? (
           <div className="divide-y divide-border rounded-md border">
             {posts.docs.map((post: any) => (
-              <>
-                <PostItem key={post.id} post={post} />
-              </>
+              <PostItem key={post.id} post={post} />
             ))}
           </div>
         ) : (

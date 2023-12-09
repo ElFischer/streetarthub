@@ -3,10 +3,7 @@
 import React from 'react'
 import Card from "@/components/card"
 import { Masonry } from '../masonry'
-import { postsNextBatch } from '@/lib/firebasePost'
-import { getCollectionPosts } from '@/lib/firebase/collections'
-import { getArtistPosts } from '@/lib/firebase/artists'
-
+import { fetchPosts } from '@/lib/firebase/posts'
 import type { PostsFeed } from "@/lib/models/Posts"
 
 import { useInView } from 'react-intersection-observer'
@@ -21,17 +18,21 @@ import { FeedSkeleton } from "@/components/ui/skeleton";
 
 const queryClient = new QueryClient()
 
-export default function FeedView({ collection, artist }: { collection?: string, artist?: string }) {
+export default function FeedView({ collection, artist, user }: { collection?: string, artist?: string, user?: string }) {
     return (
         <QueryClientProvider client={queryClient}>
-            <Feed collection={collection} artist={artist} />
+            <Feed collection={collection} artist={artist} user={user} />
         </QueryClientProvider>
     )
 }
 
-function Feed({ collection, artist }: { collection?: string, artist?: string }) {
+function Feed({ collection, artist, user }: { collection?: string, artist?: string, user?: string }) {
     const { ref, inView } = useInView()
     const key = collection ? collection : artist
+    const filterField = collection ? 'category' : artist ? 'artist' : user ? 'author.id' : undefined;
+    const filterValue = collection || artist || user;
+    const filterOperator = user ? '==' : 'array-contains'
+
     const {
         status,
         data,
@@ -47,16 +48,8 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
             if (window.innerWidth < 640) {
                 limit = 5
             }
-            if (collection) {
-                const res = await getCollectionPosts(pageParam, collection, limit)
-                return res as PostsFeed
-            } else if (artist) {
-                const res = await getArtistPosts(pageParam, artist, limit)
-                return res as PostsFeed
-            } else {
-                const res = await postsNextBatch(pageParam, limit)
-                return res as PostsFeed
-            }
+            const res = await fetchPosts({ key: pageParam, limitValue: limit, filterField, filterValue, filterOperator })
+            return res as PostsFeed
         },
         {
             getNextPageParam: (lastPage) => lastPage.lastVisible ?? undefined,
@@ -69,11 +62,20 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
         }
     }, [inView, fetchNextPage])
 
+    function extractIdFromUrl(url: string) {
+        const decodedUrl = decodeURIComponent(url);
+        const parts = decodedUrl.split('/');
+        const lastPart = parts[parts.length - 1];
+        const id = lastPart.split('?')[0];
+        return id;
+    }
+
     function getBlockImage(post: any) {
         if (post.content) {
             const imageBlock = post.content.blocks.find((o: any) => o.type === 'image')
             const src = imageBlock.data.file.url
-            return src
+            const id = extractIdFromUrl(src);
+            return id
         } else if (post.media) {
             return post.media[0]
         } else {
