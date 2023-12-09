@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation"
 
 import { authOptions } from "@/lib/auth"
-import TitleImage from "@/components/title-image"
+import ProfileHeader from "@/components/user-profile-header"
 import Feed from "@/components/feed/posts"
 import { getCurrentUser } from "@/lib/session"
 import { getUser } from '@/lib/firebase/user'
@@ -23,7 +23,7 @@ async function getPostFromParams(params: any) {
   if (!post) {
     null
   }
-  
+
   return post
 }
 
@@ -36,7 +36,7 @@ export default async function ProfilePage({ params }: UserPageProps) {
 
   return (
     <>
-      <TitleImage user={user} />
+      <ProfileHeader user={user} />
       <div className="container">
         <Feed user={user.id} />
       </div>
