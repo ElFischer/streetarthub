@@ -116,7 +116,7 @@ export default function Card({ id, title, image, description, count, media, type
         </div>
       </article >
       <Dialog open={isOpen} onOpenChange={closeDialog}>
-        <DialogContent className="flex flex-col justify-center py-6 lg:py-10 ">
+        <DialogContent className="flex flex-col gap-8 justify-center py-6 lg:py-10 ">
           <ContentBlock post={post} className="pb-5" />
           {media && media.length > 1 ? (
             <div className="group relative">
