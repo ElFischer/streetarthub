@@ -118,7 +118,7 @@ function Feed({ collection, artist }: { collection?: string, artist?: string }) 
                                     ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                     : <Button
                                         ref={ref}
-                                        variant={'outline'}
+                                        variant={'ghost'}
                                         onClick={() => fetchNextPage()}
                                         disabled={!hasNextPage || isFetchingNextPage}
                                     >
