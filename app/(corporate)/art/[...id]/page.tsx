@@ -11,6 +11,9 @@ import { cn, formatDate } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 
+import HeaderBlock from "@/components/card/header-block";
+import ContentBlock from "@/components/card/content-block";
+
 import BackButton, { SimpleBack } from "@/components/back-button"
 
 interface PostPageProps {
@@ -95,41 +98,8 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <article className="container relative max-w-3xl py-6 lg:py-10">
       <BackButton />
-      <div>
-
-        <h1 className="mt-2 inline-block font-heading text-4xl leading-tight lg:text-5xl">
-          {post.title}
-        </h1>
-        {post.author?.id ? (
-          <div className="mt-4 flex space-x-4">
-            <Link
-              href={`/u/${post.author.id}`}
-              className="flex items-center space-x-2 text-sm"
-            >
-              <Image
-                src={post.author.avatar || "/images/streetarthub.jpg"}
-                alt={post.author.name || "Avatar"}
-                width={42}
-                height={42}
-                className="rounded-full bg-white"
-              />
-              <div className="flex-1 text-left leading-tight">
-                <p className="font-medium">{post.author.name}</p>
-                <p className="text-[12px] text-muted-foreground">
-                  {post.date && (
-                    <time
-                      dateTime={formatDate(post.date)}
-                      className="block text-sm text-muted-foreground"
-                    >
-                      {formatDate(post.date)}
-                    </time>
-                  )}
-                </p>
-              </div>
-            </Link>
-          </div>
-        ) : null}
-      </div>
+      <HeaderBlock post={post} />
+      
       {post.media && (
         <Image
           src={`https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/art%2F@s_800_${post.media[0]}?alt=media`}
@@ -141,8 +111,7 @@ export default async function PostPage({ params }: PostPageProps) {
         />
       )}
 
-      <hr className="mt-12" />
-      <EditorOutput content={post?.content} />
+      <ContentBlock post={post} />
       <div className="flex justify-center py-6 lg:py-10">
         <SimpleBack />
       </div>
