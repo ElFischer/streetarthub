@@ -77,7 +77,7 @@ function Feed({ collection, artist, user }: { collection?: string, artist?: stri
             const id = extractIdFromUrl(src);
             return id
         } else if (post.media) {
-            return post.media[0]
+            return `@s_500_${post.media[0]}`
         } else {
             return null
         }
