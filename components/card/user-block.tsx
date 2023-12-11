@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const UserBlock = (data: any) => {
-    let post = data.post
+const UserBlock = ({ post }: any) => {
+    /* let post = data.post */
     return (
         <>
             {post.author?.id ? (

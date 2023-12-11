@@ -14,6 +14,7 @@ import { ImageGallery } from "./image-gallery";
 
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import HeaderBlock from "./header-block";
 import ContentBlock from "./content-block";
 import UserBlock from "./user-block";
 
@@ -117,7 +118,7 @@ export default function Card({ id, title, image, description, count, media, type
       </article >
       <Dialog open={isOpen} onOpenChange={closeDialog}>
         <DialogContent className="flex flex-col gap-8 justify-center py-6 lg:py-10 ">
-          <ContentBlock post={post} className="pb-5" />
+          <HeaderBlock post={post} className="pb-5" />
           {media && media.length > 1 ? (
             <div className="group relative">
               <ImageGallery images={media} type={type} id={id} isClickable={false} />
@@ -136,6 +137,7 @@ export default function Card({ id, title, image, description, count, media, type
               <span className="sr-only">View Article</span>
             </AspectRatio>
           )}
+          <ContentBlock post={post} />
         </DialogContent>
       </Dialog>
     </>

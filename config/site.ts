@@ -1,4 +1,5 @@
 import { SiteConfig, FooterConfig } from "@/types"
+import { User } from "@/lib/models/User"
 
 export const siteConfig: SiteConfig = {
   name: "streetarthub",
@@ -10,6 +11,13 @@ export const siteConfig: SiteConfig = {
     twitter: "https://twitter.com/streetarthub",
     github: "https://github.com/ElFischer/streetarthub",
   },
+}
+
+export const defaultUser: User = {
+  email: "hallo@streetarthub.com",
+  image: "https://firebasestorage.googleapis.com/v0/b/***REMOVED***.appspot.com/o/streetarthub.png?alt=media",
+  name: "streetarthub",
+  id: "15vtEbv143rvZNu7zcAP"
 }
 
 export const footerNavigation: FooterConfig = {
