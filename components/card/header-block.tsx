@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
-import { formatDate } from "@/lib/utils"
-import { Button } from "../ui/button";
+import { cn, formatDate } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "../icons";
 import { defaultUser } from "@/config/site";
 import {
@@ -29,12 +29,12 @@ const HeaderBlock = ({ post }: any) => {
               className="rounded-full bg-white"
             />
             <div className="flex-1 text-left leading-tight">
-              <p className="font-bold text-md">{post.author.name}</p>
-              <p className="text-[12px] text-muted-foreground">
+              <p className="text-[14px] font-bold">{post.author.name}</p>
+              <p className="text-[13px] text-muted-foreground">
                 {post.date && (
                   <time
                     dateTime={formatDate(post.date)}
-                    className="block "
+                    className="block"
                   >
                     {formatDate(post.date)}
                   </time>
@@ -55,12 +55,12 @@ const HeaderBlock = ({ post }: any) => {
               className="rounded-full bg-white"
             />
             <div className="flex-1 text-left leading-tight">
-              <p className="font-bold text-md">{defaultUser.name}</p>
+              <p className="font-semibold">{post.author.name}</p>
               <p className="text-[12px] text-muted-foreground">
                 {post.date && (
                   <time
                     dateTime={formatDate(post.date)}
-                    className="block "
+                    className="block text-sm text-muted-foreground"
                   >
                     {formatDate(post.date)}
                   </time>
@@ -72,10 +72,11 @@ const HeaderBlock = ({ post }: any) => {
       </div>
 
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Button variant={'ghost'} size={'icon'}>
-            <Icons.moreMenu className="h-6 w-6" />
-          </Button>
+        <DropdownMenuTrigger className={cn(
+          buttonVariants({ variant: "ghost", size: "icon" }),
+          ""
+        )}>
+          <Icons.moreMenu className="h-6 w-6" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[15rem] font-medium" align="end">
           <DropdownMenuItem className="justify-center">Report</DropdownMenuItem>

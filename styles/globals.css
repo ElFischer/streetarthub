@@ -90,6 +90,10 @@
   outline: none;
 }
 
+button:focus-visible {
+  outline: none !important;
+}
+
 @layer base {
   * {
     @apply border-border;
