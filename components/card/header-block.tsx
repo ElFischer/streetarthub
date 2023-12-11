@@ -55,7 +55,7 @@ const HeaderBlock = ({ post }: any) => {
               className="rounded-full bg-white"
             />
             <div className="flex-1 text-left leading-tight">
-              <p className="font-semibold">{post.author.name}</p>
+              <p className="font-semibold">{defaultUser.name}</p>
               <p className="text-[12px] text-muted-foreground">
                 {post.date && (
                   <time
