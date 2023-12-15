@@ -4,6 +4,7 @@ import { getCountry } from '@/lib/firebase/places'
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 export const metadata = {
     title: "Artboards",
@@ -28,14 +29,34 @@ export default async function BlogPage({ params }: any) {
                     Explore the global spectrum of urban art, where artists from diverse backgrounds leave their mark on city walls. Find out what artistic treasures adorn your city&apos;s streets and delve into the creative landscape where every location has a unique story to tell.
                 </p> */}
             </div>
-            <div className="flex gap-3 pb-5">
+            <ScrollArea className="">
+                <div className="flex w-max space-x-4 pb-6 pt-2">
+                    {location?.cities?.map((city: any, index: number) => (
+                        <Link
+                            href={"/places/" + location?.code + "/" + city}
+                            key={index}
+                            className={cn(
+                                buttonVariants({ variant: "secondary" }),
+                                "flex items-center gap-2 text-sm font-bold text-muted-foreground"
+                            )}
+                        >
+                            <>
+                                <Icons.hash className="h-4 w-4" />
+                                {city}
+                            </>
+                        </Link>
+                    ))}
+                </div>
+                <ScrollBar orientation="horizontal" className="hidden" />
+            </ScrollArea>
+            {/* <div className="flex gap-3 pb-5">
                 {location?.cities?.map((city: any, index: number) => (
                     <Link
                         href={"/places/" + location?.code + "/" + city}
                         key={index}
                         className={cn(
                             buttonVariants({ variant: "secondary" }),
-                            ""
+                            "flex items-center gap-2 text-sm font-bold text-muted-foreground"
                         )}
                     >
                         <>
@@ -45,7 +66,7 @@ export default async function BlogPage({ params }: any) {
                     </Link>
 
                 ))}
-            </div>
+            </div> */}
             <Feed place={location?.country} />
         </div>
     )
