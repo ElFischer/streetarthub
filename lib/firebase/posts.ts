@@ -5,7 +5,7 @@ import { PostSchema, type PostsFeed } from "@/lib/models/Posts";
 interface FetchPostsArgs {
     key?: string;
     limitValue?: number;
-    filterField?: 'category' | 'artist' | 'author.id';
+    filterField?: 'category' | 'artist' | 'author.id' | 'location.country.long_name' | 'location.locality.long_name';
     filterValue?: string;
     filterOperator?: WhereFilterOp;
 }

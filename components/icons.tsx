@@ -29,7 +29,8 @@ import {
   User,
   X,
   MoreHorizontal,
-  MapPin
+  MapPin,
+  Hash
 } from "lucide-react"
 
 export const Icons = {
@@ -40,6 +41,7 @@ export const Icons = {
   heart: Heart,
   close: X,
   spinner: Loader2,
+  hash: Hash,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   trash: Trash,

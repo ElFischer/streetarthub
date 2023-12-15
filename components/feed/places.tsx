@@ -5,8 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 import Card from "@/components/card"
 
-import { getCollections } from '@/lib/firebase/collections'
-import type { CollectionsFeed } from "@/lib/models/Collections"
+import { getPlaces } from '@/lib/firebase/places'
+import type { PlacesFeed } from "@/lib/models/Places"
 
 import { useInView } from 'react-intersection-observer'
 import {
@@ -43,10 +43,10 @@ function Feed() {
         hasNextPage,
         hasPreviousPage,
     } = useInfiniteQuery(
-        ['collections'],
+        ['places'],
         async ({ pageParam = null }) => {
-            const res = await getCollections(pageParam)
-            return res as CollectionsFeed
+            const res = await getPlaces(pageParam)
+            return res as PlacesFeed
         },
         {
             getNextPageParam: (lastPage) => lastPage.lastVisible ?? undefined,
@@ -59,25 +59,10 @@ function Feed() {
         }
     }, [inView, fetchNextPage])
 
-    const num1: number = 1;
-
-    function getBlockImage(post: any) {
-        const imageBlock = post.content.blocks.find((o: any) => o.type === 'image')
-        const src = imageBlock.data.file.url
-        return <Image
-            src={src}
-            alt={imageBlock.data.caption || post.title}
-            fill={true}
-            sizes="450px"
-            className="object-cover group-hover:opacity-75"
-            priority={true}
-        />
-    }
-
     if (error instanceof Error) {
         return <span>Error: {error.message}</span>
     }
-
+    console.log(data)
     return (
         <div>
             {status === 'loading' ? (
@@ -87,8 +72,8 @@ function Feed() {
                     <section className="my-3 grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                         {data?.pages.map((page, i) => (
                             <React.Fragment key={i}>
-                                {page.docs.map((collection: any, index: number) => (
-                                    <Card key={index} type={'collections'} id={collection.id} title={collection.name} image={collection.cover.image} />
+                                {page.docs.map((place: any, index: number) => (
+                                    <Card key={index} type={'places'} id={place.id} title={place.country} image={place.lastPost.media[0]} />
                                 ))}
                             </React.Fragment>
                         ))}
