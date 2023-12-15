@@ -15,6 +15,7 @@ import {
 } from '@tanstack/react-query'
 import { Icons } from '@/components/icons'
 import { Button } from '../ui/button'
+import { FeedSkeleton } from "@/components/ui/skeleton";
 
 const queryClient = new QueryClient()
 
@@ -79,7 +80,7 @@ function Feed() {
     return (
         <div>
             {status === 'loading' ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <FeedSkeleton cols={5} count={15}/>
             ) : (
                 <>
                     <section className="my-3 grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">

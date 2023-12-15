@@ -18,20 +18,20 @@ import { FeedSkeleton } from "@/components/ui/skeleton";
 
 const queryClient = new QueryClient()
 
-export default function FeedView({ collection, artist, user }: { collection?: string, artist?: string, user?: string }) {
+export default function FeedView({ collection, artist, user, place, city }: { collection?: string, artist?: string, user?: string, place?: string, city?: string }) {
     return (
         <QueryClientProvider client={queryClient}>
-            <Feed collection={collection} artist={artist} user={user} />
+            <Feed collection={collection} artist={artist} user={user} place={place} city={city} />
         </QueryClientProvider>
     )
 }
 
-function Feed({ collection, artist, user }: { collection?: string, artist?: string, user?: string }) {
+function Feed({ collection, artist, user, place, city }: { collection?: string, artist?: string, user?: string, place?: string, city?: string }) {
     const { ref, inView } = useInView()
-    const key = collection ? collection : artist
-    const filterField = collection ? 'category' : artist ? 'artist' : user ? 'author.id' : undefined;
-    const filterValue = collection || artist || user;
-    const filterOperator = user ? '==' : 'array-contains'
+    const key = collection ? collection : artist ? artist : place ? place : city ? city : undefined;
+    const filterField = collection ? 'category' : artist ? 'artist' : user ? 'author.id' : place ? 'location.country.long_name' : city ? 'location.locality.long_name' : undefined;
+    const filterValue = collection || artist || user || place || city;
+    const filterOperator = user || place || city ? '==' : 'array-contains'
 
     const {
         status,

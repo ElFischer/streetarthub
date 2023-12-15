@@ -12,11 +12,12 @@ function Skeleton({
   )
 }
 
-const FeedSkeleton = () => {
-  const skeletons = Array.from({ length: 9 });
+const FeedSkeleton = ({ cols = 3, count = 9 }) => {
+  const skeletons = Array.from({ length: count });
+  const gridColsClass = `lg:grid-cols-${cols}`;
 
   return (
-    <div className="my-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className={`my-3 grid grid-cols-1 sm:grid-cols-2 ${gridColsClass} gap-6`}>
       {skeletons.map((_, index) => (
         <div key={index} className="space-y-3">
           <Skeleton className="h-60" />
@@ -26,5 +27,6 @@ const FeedSkeleton = () => {
     </div>
   );
 };
+
 
 export { Skeleton, FeedSkeleton }

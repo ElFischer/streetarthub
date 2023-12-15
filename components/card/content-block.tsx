@@ -24,16 +24,32 @@ const ContentBlock = ({ post }: any) => {
         </div>
         <div>
           {post.location?.country?.long_name ? (
-            <Link
-              href={'#'}
-              /* href={`/places/${post.location.country.long_name}/${post.location.locality.long_name}`} */
+            <div
               className="flex items-center space-x-2 text-xs font-bold text-muted-foreground"
             >
               <div className="flex items-center gap-2">
                 <Icons.map className="h-5 w-5" />
-                <p>{`${post.location.country.long_name}, ${post.location.locality.long_name}`}</p>
+                <p>
+                  <Link
+                    href={`/places/${post.location.country.short_name}`}
+                    title={`location: ${post.location.country.long_name}`}
+                  >
+                    {post.location.country.long_name}
+                  </Link>
+                  <span>, </span>
+                  <Link
+                    href={`/places/${post.location.country.short_name}/${post.location.locality.long_name}`}
+                    title={`location: ${post.location.country.long_name}, ${post.location.locality.long_name}`}
+                  >
+                    {post.location.locality.long_name}
+                  </Link>
+
+                  {/* {`${post.location.country.long_name}
+                  , 
+                  ${post.location.locality.long_name}`} */}
+                </p>
               </div>
-            </Link>
+            </div>
           ) : null}
         </div>
       </div>
