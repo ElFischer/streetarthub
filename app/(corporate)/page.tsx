@@ -6,27 +6,27 @@ import { db } from '@/lib/firebase';
 const categories = [
   {
     name: 'Stencil Art',
-    href: '/art',
+    href: '/collections/stencil',
     imageSrc: 'https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F0ktt7giDnSXcxzJqHdiE_0.JPG?alt=media',
   },
   {
     name: 'Graffiti',
-    href: '/art',
+    href: '/collections/graffiti',
     imageSrc: 'https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F6F99a4HWvpIchTe0ixid_0.JPG?alt=media',
   },
   {
     name: 'Wheatpaste',
-    href: '/art',
+    href: '/collections/wheatpaste',
     imageSrc: 'https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2FAiFeCfypWTpZoclJIXsp_0.JPG?alt=media',
   },
   {
     name: 'Tape Art',
-    href: '/art',
+    href: '/collections/tape%20art',
     imageSrc: 'https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2FPR552smuf9LUZ4xtmTN4_0.JPG?alt=media',
   },
   {
     name: 'Installation',
-    href: '/art',
+    href: '/collections/installation',
     imageSrc: 'https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2FYFYejF7VOkHrdANalM8a_0.JPG?alt=media'
   },
 ]
