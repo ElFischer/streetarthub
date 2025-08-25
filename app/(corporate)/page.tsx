@@ -2,6 +2,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { collection, getCountFromServer } from "firebase/firestore";
 import { db } from '@/lib/firebase';
+import { WorldMapNavigation } from "@/components/map/world-map-navigation"
+import { getAllCountries } from "@/lib/firebase/places"
 
 const categories = [
   {
@@ -83,6 +85,9 @@ export default async function IndexPage() {
   const usnapshot = await getCountFromServer(ucoll);
   const userCount = usnapshot.data().count
 
+  // Lade die echten Länder aus Firebase
+  const countries = await getAllCountries();
+  console.log(countries);
   return (
     <>
       {/* Hero section */}
@@ -276,6 +281,35 @@ export default async function IndexPage() {
         <div className="mt-6 px-4 lg:hidden">
           <Link href="/collections" className="block text-sm font-semibold hover:text-orange-500">
             Browse all collections
+            <span aria-hidden="true"> &rarr;</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* World Map Navigation Section */}
+      <section className="mt-32 sm:mt-40 container">
+        <div className="sm:flex sm:items-center sm:justify-between lg:pb-5">
+          <div className="lg:col-end-1 lg:w-full lg:max-w-2xl">
+            <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+              Explore Streetart Worldwide
+            </h2>
+            <p className="mt-6 text-xl leading-8 text-muted-foreground">
+              Discover urban art from around the globe. Click on a country to explore its street art scene.
+            </p>
+          </div>
+          <Link href="/places" className="self-end hidden text-sm font-semibold hover:text-orange-500 lg:block">
+            Browse all places
+            <span aria-hidden="true"> &rarr;</span>
+          </Link>
+        </div>
+
+        <div className="mt-16">
+          <WorldMapNavigation countries={countries} />
+        </div>
+
+        <div className="mt-16 px-4 lg:hidden">
+          <Link href="/places" className="block text-sm font-semibold hover:text-orange-500">
+            Browse all places
             <span aria-hidden="true"> &rarr;</span>
           </Link>
         </div>

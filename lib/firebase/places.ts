@@ -33,6 +33,31 @@ export async function getPlaces(key?: string): Promise<PlacesFeed | undefined> {
     }
 }
 
+export async function getAllCountries(): Promise<{ code: string; name: string; }[]> {
+    try {
+        const fbResponse = query(collection(db, "locations"));
+        const documentSnapshots = await getDocs(fbResponse);
+
+        const countries = documentSnapshots.docs.map(doc => {
+            const data = doc.data();
+            return {
+                code: data.code || doc.id,
+                name: data.country || 'Unknown'
+            };
+        });
+
+        // Entferne Duplikate basierend auf dem code
+        const uniqueCountries = countries.filter((country, index, self) => 
+            index === self.findIndex((c) => c.code === country.code)
+        );
+
+        return uniqueCountries;
+    } catch (error) {
+        if (error instanceof Error) console.log(error.stack)
+        return [];
+    }
+}
+
 export async function getCountry(id: string): Promise<Place | undefined> {
     try {
         let fbResponse = doc(db, "locations", id);
