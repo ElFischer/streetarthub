@@ -19,6 +19,17 @@ import { updatePost, deletePostWithImages } from "@/lib/firebasePost"
 import { buttonVariants } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { uploadFile } from "@/lib/firebaseStore"
 import { ComboboxDemo } from "./combobox"
 
@@ -140,11 +151,7 @@ export function Editor({ post }: EditorProps) {
         })
     }
 
-    async function onDelete() {
-        if (!confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
-            return
-        }
-
+    async function handleDelete() {
         setIsDeleting(true)
 
         const success = await deletePostWithImages(post.id)
@@ -160,6 +167,7 @@ export function Editor({ post }: EditorProps) {
         }
 
         router.push("/dashboard")
+        router.refresh()
 
         return toast({
             description: "Your post has been deleted.",
@@ -189,17 +197,38 @@ export function Editor({ post }: EditorProps) {
                         </p>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <button
-                            type="button"
-                            onClick={onDelete}
-                            className={cn(buttonVariants({ variant: "destructive" }))}
-                            disabled={isDeleting || isSaving}
-                        >
-                            {isDeleting && (
-                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                            )}
-                            <span>Delete</span>
-                        </button>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <button
+                                    type="button"
+                                    className={cn(buttonVariants({ variant: "destructive" }))}
+                                    disabled={isDeleting || isSaving}
+                                >
+                                    {isDeleting && (
+                                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                                    )}
+                                    <span>Delete</span>
+                                </button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will permanently delete your post
+                                        and remove all associated images from our servers.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction
+                                        onClick={handleDelete}
+                                        className={cn(buttonVariants({ variant: "destructive" }))}
+                                    >
+                                        Delete Post
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                         <button type="submit" className={cn(buttonVariants())} disabled={isDeleting || isSaving}>
                             {isSaving && (
                                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
