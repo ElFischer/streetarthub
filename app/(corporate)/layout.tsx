@@ -30,7 +30,8 @@ export default async function CorporateLayout({
       <header className="container-fluid z-40 fixed bg-background/90 3xl:bg-transparent backdrop-blur-sm">
         <div className="flex h-20 items-center justify-between py-6">
           <MainNav items={corporateConfig.mainNav} />
-         {/*  {user ? (
+          {/* TODO: Add user account nav */}
+          {/*  {user ? (
             <UserAccountNav
               user={{
                 name: user.name,

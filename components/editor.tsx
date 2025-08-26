@@ -201,7 +201,7 @@ export function Editor({ post }: EditorProps) {
                             <AlertDialogTrigger asChild>
                                 <button
                                     type="button"
-                                    className={cn(buttonVariants({ variant: "destructive" }))}
+                                    className={cn(buttonVariants({ variant: "ghost" }))}
                                     disabled={isDeleting || isSaving}
                                 >
                                     {isDeleting && (
