@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils"
 import { postPatchSchema } from "@/lib/models/Posts"
 import type { Post } from "@/lib/models/Posts"
 
-import { updatePost } from "@/lib/firebasePost"
+import { updatePost, deletePostWithImages } from "@/lib/firebasePost"
 import { buttonVariants } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
@@ -35,6 +35,7 @@ export function Editor({ post }: EditorProps) {
     const ref = React.useRef<EditorJS>()
     const router = useRouter()
     const [isSaving, setIsSaving] = React.useState<boolean>(false)
+    const [isDeleting, setIsDeleting] = React.useState<boolean>(false)
     const [isMounted, setIsMounted] = React.useState<boolean>(false)
 
     const initializeEditor = React.useCallback(async () => {
@@ -139,6 +140,32 @@ export function Editor({ post }: EditorProps) {
         })
     }
 
+    async function onDelete() {
+        if (!confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+            return
+        }
+
+        setIsDeleting(true)
+
+        const success = await deletePostWithImages(post.id)
+
+        setIsDeleting(false)
+
+        if (!success) {
+            return toast({
+                title: "Something went wrong.",
+                description: "Your post could not be deleted. Please try again.",
+                variant: "destructive",
+            })
+        }
+
+        router.push("/dashboard")
+
+        return toast({
+            description: "Your post has been deleted.",
+        })
+    }
+
     if (!isMounted) {
         return null
     }
@@ -161,12 +188,25 @@ export function Editor({ post }: EditorProps) {
                             {post.approved ? "Published" : "Draft"}
                         </p>
                     </div>
-                    <button type="submit" className={cn(buttonVariants())}>
-                        {isSaving && (
-                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                        )}
-                        <span>Save</span>
-                    </button>
+                    <div className="flex items-center space-x-2">
+                        <button
+                            type="button"
+                            onClick={onDelete}
+                            className={cn(buttonVariants({ variant: "destructive" }))}
+                            disabled={isDeleting || isSaving}
+                        >
+                            {isDeleting && (
+                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                            )}
+                            <span>Delete</span>
+                        </button>
+                        <button type="submit" className={cn(buttonVariants())} disabled={isDeleting || isSaving}>
+                            {isSaving && (
+                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                            )}
+                            <span>Save</span>
+                        </button>
+                    </div>
                 </div>
                 <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert">
                     <TextareaAutosize
