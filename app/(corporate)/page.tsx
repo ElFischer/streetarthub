@@ -85,9 +85,8 @@ export default async function IndexPage() {
   const usnapshot = await getCountFromServer(ucoll);
   const userCount = usnapshot.data().count
 
-  // Lade die echten Länder aus Firebase
   const countries = await getAllCountries();
-  console.log(countries);
+
   return (
     <>
       {/* Hero section */}
