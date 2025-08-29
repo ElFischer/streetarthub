@@ -79,12 +79,17 @@ export function generateSEO({
 
 // Specific SEO generators for different page types
 export function generatePostSEO(post: any): Metadata {
+    // Generate the full Firebase Storage URL for the first media item
+    const imageUrl = post.media?.[0] 
+        ? `https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_800_${post.media[0]}?alt=media`
+        : post.cover?.[0]?.url || '/images/streetarthub.jpg'
+
     return generateSEO({
         title: post.title,
         description: post.description || `Discover this amazing street art piece: ${post.title}`,
         url: `/art/${post.id}`,
         type: 'article',
-        image: post.media?.[0] || post.cover?.[0]?.url,
+        image: imageUrl,
         publishedTime: post.createdAt,
         modifiedTime: post.updatedAt,
         author: post.author?.name,
