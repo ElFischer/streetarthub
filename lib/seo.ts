@@ -117,7 +117,7 @@ export function generateCollectionSEO(collection: any): Metadata {
 
 export function generatePlaceSEO(place: any): Metadata {
     return generateSEO({
-        title: `${place.name} Street Art`,
+        title: `Street Art in ${place.name}`,
         description: `Discover street art in ${place.name}`,
         url: `/places/${place.id}`,
         type: 'website',
