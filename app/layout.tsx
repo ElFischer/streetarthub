@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
+import { ServerStructuredData, generateWebsiteStructuredData, generateOrganizationStructuredData } from "@/components/structured-data"
 
 import localFont from "next/font/local"
 
@@ -60,6 +61,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <ServerStructuredData data={generateWebsiteStructuredData()} />
+        <ServerStructuredData data={generateOrganizationStructuredData()} />
+      </head>
       <body className={cn(
         "min-h-screen bg-background font-sans antialiased",
         fontSans.variable,
