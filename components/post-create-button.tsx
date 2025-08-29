@@ -46,9 +46,9 @@ export function PostCreateButton({
      }
  
      // This forces a cache invalidation.
-    /*  router.refresh()
+     router.refresh()
  
-     router.push(`/editor/${response}`) */
+     router.push(`/editor/${response}`)
   }
 
   return (

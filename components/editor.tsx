@@ -31,15 +31,16 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { uploadFile } from "@/lib/firebaseStore"
-import { ComboboxDemo } from "./combobox"
+import { SocialSharingDialog } from "./social-sharing-dialog"
 
 interface EditorProps {
     post: Pick<Post, "id" | "title" | "content" | "approved" | "date">
+    userSocialAccounts?: any[]
 }
 
 type FormData = z.infer<typeof postPatchSchema>
 
-export function Editor({ post }: EditorProps) {
+export function Editor({ post, userSocialAccounts = [] }: EditorProps) {
     const { register, handleSubmit } = useForm<FormData>({
         resolver: zodResolver(postPatchSchema),
     })
@@ -197,6 +198,21 @@ export function Editor({ post }: EditorProps) {
                         </p>
                     </div>
                     <div className="flex items-center space-x-2">
+                        {post.approved && userSocialAccounts.some(acc => acc.enabled) && (
+                            <SocialSharingDialog
+                                post={post}
+                                userSocialAccounts={userSocialAccounts}
+                            >
+                                <button
+                                    type="button"
+                                    className={cn(buttonVariants({ variant: "outline" }))}
+                                    disabled={isDeleting || isSaving}
+                                >
+                                    <Icons.share className="mr-2 h-4 w-4" />
+                                    <span>Share</span>
+                                </button>
+                            </SocialSharingDialog>
+                        )}
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
                                 <button

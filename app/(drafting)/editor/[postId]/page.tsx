@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation"
 
 import { authOptions } from "@/lib/auth"
 import { getCurrentUser } from "@/lib/session"
+import { getUser } from "@/lib/firebase/user"
 import { Editor } from "@/components/editor"
 import { getPost } from "@/lib/firebasePost"
 
@@ -25,7 +26,8 @@ export default async function EditorPage({ params }: EditorPageProps) {
     if (!user) {
         redirect(authOptions?.pages?.signIn || "/login")
     }
-    
+    const fullUser = await getUser(user.id)
+
     const post = await getPostFromParams(params.postId)
     
     if (!post) {
@@ -39,9 +41,10 @@ export default async function EditorPage({ params }: EditorPageProps) {
                     id: params.postId,
                     title: post.title,
                     content: post.content,
-                    approved: false,
+                    approved: post.approved,
                     date: post.date,
                 }}
+                userSocialAccounts={fullUser?.socialMediaAccounts || []}
             />
         </>
     )
