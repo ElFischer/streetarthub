@@ -1,10 +1,15 @@
+import { Metadata } from "next"
 import Feed from "@/components/feed/artists"
 import { collection, getCountFromServer } from "firebase/firestore";
 import { db } from '@/lib/firebase';
+import { generateSEO } from '@/lib/seo'
 
-export const metadata = {
-    title: "Artboards",
-}
+export const metadata: Metadata = generateSEO({
+  title: "Street Art Artists",
+  description: "Discover talented street art artists from around the world. Explore their unique styles, techniques, and inspiring works on StreetArtHub.",
+  url: "/artists",
+  keywords: ["Street Art Artists", "Graffiti Artists", "Urban Artists", "Street Art Creators", "Mural Artists"],
+})
 
 export default async function ArtistsPage() {
     const coll = collection(db, "artists");

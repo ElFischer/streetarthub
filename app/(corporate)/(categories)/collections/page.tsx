@@ -1,10 +1,15 @@
+import { Metadata } from "next"
 import Feed from "@/components/feed/collections"
 import { collection, getCountFromServer } from "firebase/firestore";
 import { db } from '@/lib/firebase';
+import { generateSEO } from '@/lib/seo'
 
-export const metadata = {
-    title: "Artboards",
-}
+export const metadata: Metadata = generateSEO({
+  title: "Street Art Collections",
+  description: "Explore curated street art collections from around the world. Discover themed galleries, exhibitions, and carefully selected street art pieces on StreetArtHub.",
+  url: "/collections",
+  keywords: ["Street Art Collections", "Street Art Galleries", "Street Art Exhibitions", "Curated Street Art", "Street Art Themes"],
+})
 
 export default async function CollectionsPage() {
 

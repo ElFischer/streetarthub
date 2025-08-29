@@ -1,15 +1,20 @@
+import { Metadata } from "next"
 import Feed from "@/components/feed/places"
 import { collection, getCountFromServer } from "firebase/firestore";
 import { db } from '@/lib/firebase';
+import { generateSEO } from '@/lib/seo'
 
-export const metadata = {
-  title: "Artboards",
-}
+export const metadata: Metadata = generateSEO({
+  title: "Street Art Locations",
+  description: "Discover street art locations and places around the world. Explore cities, neighborhoods, and specific spots where amazing street art can be found on StreetArtHub.",
+  url: "/places",
+  keywords: ["Street Art Locations", "Street Art Places", "Street Art Cities", "Street Art Spots", "Street Art Destinations"],
+})
 
-export default async function BlogPage() {
-  const loc = collection(db, "locations");
-  const snapshot = await getCountFromServer(loc);
-  const count = snapshot.data().count
+export default async function PlacesPage() {
+    const coll = collection(db, "locations");
+    const snapshot = await getCountFromServer(coll);
+    const count = snapshot.data().count
 
   return (
     <div className="container">
