@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import EditorJS from "@editorjs/editorjs"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import TextareaAutosize from "react-textarea-autosize"
 import * as z from "zod"
 
@@ -19,6 +19,11 @@ import { updatePost, deletePostWithImages } from "@/lib/firebasePost"
 import { buttonVariants } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { ArtistCombobox } from "@/components/ui/artist-combobox"
+import { CategoryCombobox } from "@/components/ui/category-combobox"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -31,17 +36,28 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { uploadFile } from "@/lib/firebaseStore"
-import { ComboboxDemo } from "./combobox"
 
 interface EditorProps {
-    post: Pick<Post, "id" | "title" | "content" | "approved" | "date">
+    post: Pick<Post, "id" | "title" | "content" | "approved" | "date" | "artist" | "category" | "description" | "source" | "cover" | "location">
 }
 
 type FormData = z.infer<typeof postPatchSchema>
 
 export function Editor({ post }: EditorProps) {
-    const { register, handleSubmit } = useForm<FormData>({
+    const { register, handleSubmit, control, watch } = useForm<FormData>({
         resolver: zodResolver(postPatchSchema),
+        defaultValues: {
+            title: post.title || "",
+            artist: post.artist || [],
+            category: post.category || [],
+            description: post.description || "",
+            source: post.source || "",
+            location: post.location || {
+                country: { long_name: "", short_name: "" },
+                locality: { long_name: "", short_name: "" },
+                geoData: { lat: 0, lng: 0 }
+            }
+        }
     })
     const ref = React.useRef<EditorJS>()
     const router = useRouter()
@@ -129,10 +145,27 @@ export function Editor({ post }: EditorProps) {
 
         const blocks = await ref.current?.save()
 
-        const response = updatePost({
-            title: data.title,
+        // Prepare the update data, only including fields that have values
+        const updateData: any = {
             content: blocks,
-        }, post.id)
+        }
+
+        if (data.title) updateData.title = data.title
+        if (data.artist && data.artist.length > 0) updateData.artist = data.artist
+        if (data.category && data.category.length > 0) updateData.category = data.category
+        if (data.description) updateData.description = data.description
+        if (data.source) updateData.source = data.source
+        
+        // Only include location if it has meaningful data
+        if (data.location && (
+            data.location.country?.long_name || 
+            data.location.locality?.long_name ||
+            (data.location.geoData?.lat && data.location.geoData?.lng)
+        )) {
+            updateData.location = data.location
+        }
+
+        const response = updatePost(updateData, post.id)
 
         setIsSaving(false)
 
@@ -237,24 +270,151 @@ export function Editor({ post }: EditorProps) {
                         </button>
                     </div>
                 </div>
-                <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert">
-                    <TextareaAutosize
-                        autoFocus
-                        id="title"
-                        defaultValue={post.title}
-                        placeholder="Post title"
-                        className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
-                        {...register("title")}
-                    />
-                    {/* <ComboboxDemo /> */}
-                    <div id="editor" className="min-h-[500px]" />
-                    <p className="text-sm text-gray-500">
-                        Use{" "}
-                        <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">
-                            Tab
-                        </kbd>{" "}
-                        to open the command menu.
-                    </p>
+                <div className="mx-auto w-full max-w-5xl">
+                    {/* Main title */}
+                    <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert mb-8">
+                        <TextareaAutosize
+                            autoFocus
+                            id="title"
+                            defaultValue={post.title}
+                            placeholder="Post title"
+                            className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
+                            {...register("title")}
+                        />
+                    </div>
+
+                    {/* Metadata fields */}
+                    <div className="mb-8 space-y-6 mx-auto w-[800px]">
+                        {/* Artists */}
+                        <div className="space-y-2">
+                            <Label htmlFor="artists">Artists</Label>
+                            <Controller
+                                name="artist"
+                                control={control}
+                                render={({ field }) => (
+                                    <ArtistCombobox
+                                        value={field.value || []}
+                                        onChange={field.onChange}
+                                        placeholder="Select or add artists..."
+                                    />
+                                )}
+                            />
+                        </div>
+
+                        {/* Categories */}
+                        <div className="space-y-2">
+                            <Label htmlFor="categories">Categories</Label>
+                            <Controller
+                                name="category"
+                                control={control}
+                                render={({ field }) => (
+                                    <CategoryCombobox
+                                        value={field.value || []}
+                                        onChange={field.onChange}
+                                        placeholder="Select or add categories..."
+                                    />
+                                )}
+                            />
+                        </div>
+
+                        {/* Description */}
+                        <div className="space-y-2">
+                            <Label htmlFor="description">Description</Label>
+                            <Textarea
+                                id="description"
+                                placeholder="Brief description of the artwork..."
+                                className="resize-none"
+                                rows={3}
+                                {...register("description")}
+                            />
+                        </div>
+
+                        {/* Source */}
+                        <div className="space-y-2">
+                            <Label htmlFor="source">Source URL</Label>
+                            <Input
+                                id="source"
+                                type="url"
+                                placeholder="https://example.com/artwork-source"
+                                {...register("source")}
+                            />
+                        </div>
+
+                        {/* Location fields */}
+                        <div className="space-y-4">
+                            <Label>Location</Label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="country">Country</Label>
+                                    <Input
+                                        id="country"
+                                        placeholder="Country name"
+                                        {...register("location.country.long_name")}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="country_code">Country Code</Label>
+                                    <Input
+                                        id="country_code"
+                                        placeholder="US, DE, NZ..."
+                                        {...register("location.country.short_name")}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="city">City</Label>
+                                    <Input
+                                        id="city"
+                                        placeholder="City name"
+                                        {...register("location.locality.long_name")}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="city_short">City Short</Label>
+                                    <Input
+                                        id="city_short"
+                                        placeholder="Short city name"
+                                        {...register("location.locality.short_name")}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="latitude">Latitude</Label>
+                                    <Input
+                                        id="latitude"
+                                        type="number"
+                                        step="any"
+                                        placeholder="-45.8787605"
+                                        {...register("location.geoData.lat", { 
+                                            setValueAs: (value) => value === "" ? undefined : parseFloat(value) 
+                                        })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="longitude">Longitude</Label>
+                                    <Input
+                                        id="longitude"
+                                        type="number"
+                                        step="any"
+                                        placeholder="170.5027976"
+                                        {...register("location.geoData.lng", { 
+                                            setValueAs: (value) => value === "" ? undefined : parseFloat(value) 
+                                        })}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Editor */}
+                    <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert">
+                        <div id="editor" className="min-h-[500px]" />
+                        <p className="text-sm text-gray-500">
+                            Use{" "}
+                            <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">
+                                Tab
+                            </kbd>{" "}
+                            to open the command menu.
+                        </p>
+                    </div>
                 </div>
             </div>
         </form>

@@ -41,6 +41,12 @@ export default async function EditorPage({ params }: EditorPageProps) {
                     content: post.content,
                     approved: false,
                     date: post.date,
+                    artist: post.artist,
+                    category: post.category,
+                    description: post.description,
+                    source: post.source,
+                    cover: post.cover,
+                    location: post.location,
                 }}
             />
         </>
