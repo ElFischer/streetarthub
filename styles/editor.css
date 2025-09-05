@@ -63,3 +63,69 @@
 .codex-editor__redactor {
   padding-bottom: 0 !important;
 }
+
+/* Fix passive touch event listeners warning */
+.codex-editor,
+.codex-editor *,
+.ce-block,
+.ce-toolbar,
+.ce-inline-toolbar,
+.cdx-block {
+  touch-action: manipulation;
+  -ms-touch-action: manipulation;
+}
+
+/* Additional touch optimization */
+.codex-editor {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure all interactive elements have proper touch behavior */
+.ce-block__content,
+.ce-toolbar__content,
+.ce-conversion-toolbar,
+.ce-settings {
+  touch-action: manipulation;
+}
+
+/* Fix for toolbar buttons */
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn,
+.ce-inline-toolbar__dropdown,
+.ce-conversion-tool {
+  touch-action: manipulation;
+}
+
+/* Fix for custom blocks and their React components */
+.artist-block,
+.category-block,
+.metadata-block,
+.location-block,
+.cover-block {
+  touch-action: manipulation;
+}
+
+.artist-block *,
+.category-block *,
+.metadata-block *,
+.location-block *,
+.cover-block * {
+  touch-action: manipulation;
+}
+
+/* Fix for comboboxes and their dropdowns */
+[data-radix-popper-content-wrapper],
+[data-radix-popper-content-wrapper] *,
+.ce-popover,
+.ce-popover *,
+[role="combobox"],
+[role="combobox"] *,
+[role="listbox"],
+[role="listbox"] * {
+  touch-action: manipulation;
+}
+
+/* Hidden toolbox buttons for single-use blocks */
+.ce-toolbox__button[style*="display: none"] {
+  display: none !important;
+}

@@ -72,13 +72,31 @@ export async function deletePostWithImages(id: string): Promise<boolean> {
             return false;
         }
 
-        // Extract image URLs from content blocks
+        // Extract image URLs from content blocks and cover images
         const imageUrls: string[] = [];
         
+        // Get images from content blocks
         if (post.content && post.content.blocks) {
             post.content.blocks.forEach((block: any) => {
                 if (block.type === 'image' && block.data && block.data.file && block.data.file.url) {
                     imageUrls.push(block.data.file.url);
+                }
+                // Also check coverBlock within content
+                if (block.type === 'coverBlock' && block.data && block.data.cover) {
+                    block.data.cover.forEach((coverItem: any) => {
+                        if (coverItem.url) {
+                            imageUrls.push(coverItem.url);
+                        }
+                    });
+                }
+            });
+        }
+        
+        // Get cover images from direct cover field
+        if (post.cover && Array.isArray(post.cover)) {
+            post.cover.forEach((coverItem: any) => {
+                if (coverItem.url) {
+                    imageUrls.push(coverItem.url);
                 }
             });
         }

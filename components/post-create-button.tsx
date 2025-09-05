@@ -25,30 +25,13 @@ export function PostCreateButton({
   async function onClick() {
     setIsLoading(true)
 
-    const response = await setPost({
-      title: "Untitled Post",
-      approved: false,
-      author: {
-        id: user.id,
-        name: user.name,
-        avatar: user.image,
-      }
-    })
-
+    // Generate a temporary ID for the new draft post
+    const tempId = `draft-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    
     setIsLoading(false)
 
-     if (!response) {
-       return toast({
-         title: "Something went wrong.",
-         description: "Your post was not created. Please try again.",
-         variant: "destructive",
-       })
-     }
- 
-     // This forces a cache invalidation.
-    /*  router.refresh()
- 
-     router.push(`/editor/${response}`) */
+    // Navigate directly to editor with draft ID and user data in query params
+    router.push(`/editor/${tempId}?draft=true&userId=${user.id}&userName=${encodeURIComponent(user.name)}&userAvatar=${encodeURIComponent(user.image || '')}`)
   }
 
   return (

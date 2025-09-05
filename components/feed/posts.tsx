@@ -72,15 +72,32 @@ function Feed({ collection, artist, user, place, city }: { collection?: string, 
 
     function getBlockImage(post: any) {
         if (post.content) {
+            // First try to find coverBlock (new structure)
+            const coverBlock = post.content.blocks.find((o: any) => o.type === 'coverBlock')
+            if (coverBlock && coverBlock.data?.cover && coverBlock.data.cover.length > 0) {
+                const src = coverBlock.data.cover[0].url
+                const id = extractIdFromUrl(src);
+                return id
+            }
+            
+            // Fallback to image block (old structure)
             const imageBlock = post.content.blocks.find((o: any) => o.type === 'image')
-            const src = imageBlock.data.file.url
+            if (imageBlock && imageBlock.data?.file?.url) {
+                const src = imageBlock.data.file.url
+                const id = extractIdFromUrl(src);
+                return id
+            }
+        } else if (post.cover && post.cover.length > 0) {
+            // Try direct cover field
+            const src = post.cover[0].url
             const id = extractIdFromUrl(src);
             return id
         } else if (post.media) {
+            // Old media field
             return `@s_500_${post.media[0]}`
-        } else {
-            return null
         }
+        
+        return null
     }
 
     if (error instanceof Error) {
