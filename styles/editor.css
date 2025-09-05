@@ -75,6 +75,10 @@
   -ms-touch-action: manipulation;
 }
 
+.ce-block {
+  margin-bottom: 25px;
+}
+
 /* Additional touch optimization */
 .codex-editor {
   -webkit-overflow-scrolling: touch;

@@ -162,6 +162,7 @@ export default class CoverBlock {
           display: block;
           border-radius: 8px;
           overflow: hidden;
+          margin: unset;
         }
         .cover-overlay {
           position: absolute;
@@ -285,22 +286,26 @@ export default class CoverBlock {
         reader.onload = (e) => {
           const base64Data = e.target?.result as string;
           
-          // Create cover object with base64 data
-          const coverData = {
-            url: base64Data,
-            width: 0,
-            height: 0,
-            file: file, // Store original file for later upload
-            isDraft: true
-          };
+          // Get image dimensions from Base64
+          const img = new Image();
+          img.onload = () => {
+            const coverData = {
+              url: base64Data,
+              width: img.naturalWidth,
+              height: img.naturalHeight,
+              file: file, // Store original file for later upload
+              isDraft: true
+            };
 
-          // Update data
-          this.data.cover = [coverData];
-          
-          // Re-render
-          this.updateDisplay();
-          
-          console.log('Cover stored temporarily:', coverData);
+            // Update data
+            this.data.cover = [coverData];
+            
+            // Re-render
+            this.updateDisplay();
+            
+            console.log('Cover stored temporarily with dimensions:', coverData);
+          };
+          img.src = base64Data;
         };
         reader.readAsDataURL(file);
       } else {
@@ -312,19 +317,30 @@ export default class CoverBlock {
         const url = await uploadFile(file, `art/${postId}_${date.getTime()}`);
         
         // Create cover object
-        const coverData = {
+        // Get image dimensions and update data
+        const img = new Image();
+        img.onload = () => {
+          const coverData = {
+            url: url as string,
+            width: img.naturalWidth,
+            height: img.naturalHeight
+          };
+          this.data.cover = [coverData];
+          this.updateDisplay();
+          console.log('Cover uploaded with dimensions:', coverData);
+        };
+        img.src = url as string;
+        
+        // Temporary data until dimensions are loaded
+        const tempCoverData = {
           url: url as string,
           width: 0,
           height: 0
         };
-
-        // Update data
-        this.data.cover = [coverData];
+        this.data.cover = [tempCoverData];
         
         // Re-render
         this.updateDisplay();
-        
-        console.log('Cover uploaded:', coverData);
       }
     } catch (error) {
       console.error('Error processing cover:', error);
