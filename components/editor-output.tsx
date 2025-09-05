@@ -25,12 +25,27 @@ const style = {
 }
 
 const EditorOutput: FC<EditorOutputProps> = ({ content }) => {
+    // Filter out custom metadata blocks from rendering
+    const filteredContent = content ? {
+        ...content,
+        blocks: content.blocks?.filter((block: any) => {
+            // Only show standard EditorJS blocks, hide custom metadata blocks
+            const customBlocks = ['coverBlock', 'artistBlock', 'categoryBlock', 'metadataBlock', 'locationBlock'];
+            return !customBlocks.includes(block.type);
+        }) || []
+    } : null;
+
+    // Don't render anything if no standard blocks exist
+    if (!filteredContent || !filteredContent.blocks || filteredContent.blocks.length === 0) {
+        return null;
+    }
+
     return (
         <Output
             style={style}
             className='text-sm'
             renderers={renderers}
-            data={content}
+            data={filteredContent}
         />
     )
 }
