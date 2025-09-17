@@ -130,7 +130,7 @@ export function ArtistCombobox({ value = [], onChange, placeholder = "Select art
                           onClick={() => handleAddNew(searchTerm)}
                           className="w-full"
                         >
-                          Add "{searchTerm}" as new artist
+                          Add &quot;{searchTerm}&quot; as new artist
                         </Button>
                       )}
                     </div>
@@ -160,7 +160,7 @@ export function ArtistCombobox({ value = [], onChange, placeholder = "Select art
                       >
                         <div className="flex items-center">
                           <span className="mr-2">+</span>
-                          Add "{searchTerm}" as new artist
+                          Add &quot;{searchTerm}&quot; as new artist
                         </div>
                       </CommandItem>
                     )}

@@ -127,7 +127,7 @@ export function CategoryCombobox({ value = [], onChange, placeholder = "Select c
                           onClick={() => handleAddNew(searchTerm)}
                           className="w-full"
                         >
-                          Add "{searchTerm.toLowerCase()}" as new category
+                          Add &quot;{searchTerm.toLowerCase()}&quot; as new category
                         </Button>
                       )}
                     </div>
@@ -157,7 +157,7 @@ export function CategoryCombobox({ value = [], onChange, placeholder = "Select c
                       >
                         <div className="flex items-center">
                           <span className="mr-2">+</span>
-                          Add "{searchTerm.toLowerCase()}" as new category
+                          Add &quot;{searchTerm.toLowerCase()}&quot; as new category
                         </div>
                       </CommandItem>
                     )}
