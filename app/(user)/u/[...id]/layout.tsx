@@ -23,7 +23,7 @@ export default async function CorporateLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="container z-40 bg-background">
+      <header className="container-fluid z-[80] fixed bg-background/90 3xl:bg-transparent backdrop-blur-sm">
         <div className="flex h-20 items-center justify-between py-6">
           <MainNav items={corporateConfig.mainNav} />
           {user ? (
@@ -50,7 +50,7 @@ export default async function CorporateLayout({
           )}
         </div>
       </header>
-      <main>{children}</main>
+      <main className="flex-1 pt-20">{children}</main>
       <SiteFooter />
     </div>
   )
