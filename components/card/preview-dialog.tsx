@@ -5,6 +5,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { ChevronLeft } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const Dialog = DialogPrimitive.Root
 
@@ -42,14 +43,16 @@ const DialogContent = React.forwardRef<
                 )}
                 {...props}
             >
-                <div
-                    className={cn(
-                        "gap-4 grid bg-background sm:rounded-lg relative mb-10 w-full",
-                        className
-                    )}>
-                    {children}
-
-                </div>
+                <ScrollArea className="h-[calc(100dvh-5rem)] w-full overscroll-contain" style={{ WebkitOverflowScrolling: "touch" }}>
+                    <div
+                        className={cn(
+                            "gap-4 grid bg-background sm:rounded-lg relative mb-10 w-full",
+                            className
+                        )}
+                    >
+                        {children}
+                    </div>
+                </ScrollArea>
             </DialogPrimitive.Content>
             <DialogPrimitive.Close className="absolute left-7 top-24 translate-y-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
                 <ChevronLeft className="h-6 w-6" />
