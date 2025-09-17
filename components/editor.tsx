@@ -457,6 +457,42 @@ export function Editor({ post, isDraft = false }: EditorProps) {
 
         // Extract metadata from editor blocks
         const extractedData = extractMetadataFromBlocks(editorData?.blocks || [])
+        
+        // Extract media filenames - cover image first, then other images
+        const mediaFilenames: string[] = []
+        
+        // Add cover image filename first (if exists)
+        if (extractedData.cover && extractedData.cover.length > 0) {
+            const coverUrl = extractedData.cover[0].url
+            console.log('Cover URL:', coverUrl)
+            if (coverUrl && (coverUrl.includes('art/') || coverUrl.includes('art%2F'))) {
+                const match = coverUrl.match(/art%2F([^?&]+)/)
+                
+                if (match && match[1]) {
+                    const decodedFilename = decodeURIComponent(match[1])
+                    console.log('Extracted cover filename:', decodedFilename)
+                    mediaFilenames.push(decodedFilename)
+                }
+            }
+        }
+        
+        // Then add other image block filenames
+        if (editorData?.blocks) {
+            editorData.blocks.forEach((block: any) => {
+                if (block.type === 'image' && block.data?.file?.url) {
+                    const url = block.data.file.url
+                    if (url && (url.includes('art/') || url.includes('art%2F'))) {
+                        // Extract filename from Firebase Storage URL
+                        const match = url.match(/art%2F([^?&]+)/)
+                        if (match && match[1]) {
+                            const decodedFilename = decodeURIComponent(match[1])
+                            console.log('Extracted image filename:', decodedFilename)
+                            mediaFilenames.push(decodedFilename)
+                        }
+                    }
+                }
+            })
+        }
 
         // Upload any draft images before saving
         if (isDraft) {
@@ -485,7 +521,11 @@ export function Editor({ post, isDraft = false }: EditorProps) {
                     for (const block of editorData.blocks) {
                         if (block.type === 'image' && block.data?.file?.isDraft && block.data.file.originalFile) {
                             const date = new Date();
-                            const url = await uploadFile(block.data.file.originalFile, `art/${tempId}_${date.getTime()}`);
+                            const filename = `${tempId}_${date.getTime()}`;
+                            const url = await uploadFile(block.data.file.originalFile, `art/${filename}`);
+                            
+                            // Add filename to media array
+                            mediaFilenames.push(filename);
                             
                             // Update block data with uploaded URL
                             block.data.file = {
@@ -528,6 +568,11 @@ export function Editor({ post, isDraft = false }: EditorProps) {
             title: data.title,
             content: editorData,
             approved: false,
+        }
+        
+        // Add media filenames if any images were found
+        if (mediaFilenames.length > 0) {
+            postData.media = mediaFilenames
         }
         
         // Use data from blocks if available
