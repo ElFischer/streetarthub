@@ -72,7 +72,7 @@ export default async function PostPage({ params }: PostPageProps) {
           } else if (mediaImage) {
             return (
               <Image
-                src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_800_${mediaImage}?alt=media`}
+                src={`https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F${mediaImage}?alt=media`}
                 alt={post.title}
                 width={720}
                 height={405}

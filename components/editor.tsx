@@ -494,6 +494,58 @@ export function Editor({ post, isDraft = false }: EditorProps) {
             })
         }
 
+        // Delete images that are no longer used (only for existing posts)
+        if (!isDraft && post.id) {
+            try {
+                // Get current image URLs from editor
+                const currentImageUrls = new Set<string>()
+                if (extractedData.cover && extractedData.cover.length > 0) {
+                    currentImageUrls.add(extractedData.cover[0].url)
+                }
+                if (editorData?.blocks) {
+                    editorData.blocks.forEach((block: any) => {
+                        if (block.type === 'image' && block.data?.file?.url) {
+                            currentImageUrls.add(block.data.file.url)
+                        }
+                    })
+                }
+
+                // Use existing post data to compare (no need to fetch again)
+                const originalImageUrls = new Set<string>()
+                
+                // Get original cover images
+                if (post.cover && Array.isArray(post.cover)) {
+                    post.cover.forEach((coverItem: any) => {
+                        if (coverItem.url) {
+                            originalImageUrls.add(coverItem.url)
+                        }
+                    })
+                }
+                
+                // Get original content images
+                if (post.content && post.content.blocks) {
+                    post.content.blocks.forEach((block: any) => {
+                        if (block.type === 'image' && block.data?.file?.url) {
+                            originalImageUrls.add(block.data.file.url)
+                        }
+                    })
+                }
+
+                // Find deleted images
+                const deletedImageUrls = Array.from(originalImageUrls).filter(url => !currentImageUrls.has(url))
+                
+                // Delete removed images from storage
+                if (deletedImageUrls.length > 0) {
+                    const { deleteFile } = await import("@/lib/firebaseStore")
+                    const deletePromises = deletedImageUrls.map(url => deleteFile(url))
+                    await Promise.all(deletePromises)
+                    console.log(`Deleted ${deletedImageUrls.length} unused images from storage`)
+                }
+            } catch (error) {
+                console.debug('Error deleting unused images:', error)
+            }
+        }
+
         // Upload any draft images before saving
         if (isDraft) {
             try {
