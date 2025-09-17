@@ -63,7 +63,7 @@ export const ImageGallery = ({ images, type, id, onImageClick, isClickable }: an
                                             alt={`Gallery Image ${p}`}
                                             fill={true}
                                             sizes="450px"
-                                            className={`sm:rounded-lg object-cover object-center ${isClickable ? 'cursor-pointer' : ''}`}
+                                            className={`rounded-lg object-cover object-center ${isClickable ? 'cursor-pointer' : ''}`}
                                             priority={true}
                                             onClick={isClickable ? () => onImageClick() : undefined}
                                             placeholder='blur'
