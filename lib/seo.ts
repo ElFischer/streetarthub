@@ -82,7 +82,7 @@ export function generatePostSEO(post: any): Metadata {
 
     // Generate the full Firebase Storage URL for the first media item
     const imageUrl = post.media?.[0] 
-        ? `https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F@s_800_${post.media[0]}?alt=media`
+        ? `https://firebasestorage.googleapis.com/v0/b/nuxtsah.appspot.com/o/art%2F${post.media[0]}?alt=media`
         : post.cover?.[0]?.url || '/images/streetarthub.jpg'
 
 
