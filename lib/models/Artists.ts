@@ -15,7 +15,7 @@ export const ArtistSchema = z.object({
 })
 
 const FeedSchema = z.object({
-    docs: z.array(ArtistSchema),
+    docs: z.array(ArtistSchema.extend({ id: z.string() })),
     lastVisible: z.any().optional(),
 })
 
