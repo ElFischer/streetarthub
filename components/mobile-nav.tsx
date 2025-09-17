@@ -27,13 +27,13 @@ export function MobileNav({ items, children }: MobileNavProps) {
     <div className={cn("md:hidden")}
     >
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center justify-center space-x-2 rounded-md p-2" aria-label="Open menu">
-          <Menu className="h-6 w-6" />
+        <DropdownMenuTrigger className="flex items-center justify-center rounded-md" aria-label="Open menu">
+          <Menu className="h-6 w-6 mr-3" />
           <span className="font-heading text-xl font-bold inline-block leading-6">
             STREETARTHUB
           </span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-64">
+        <DropdownMenuContent align="start" className="w-64 z-[90]">
           {items.map((item, index) => (
             <DropdownMenuItem key={index} asChild>
               <Link
