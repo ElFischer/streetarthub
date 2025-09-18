@@ -3,6 +3,7 @@
 import * as React from "react"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useDropzone } from "react-dropzone"
+import NextImage from "next/image"
 
 export type UploaderItem = {
     id: string
@@ -124,10 +125,20 @@ export function ImageUploader({
                         <div key={item.id} className="relative group border rounded-md overflow-hidden">
                             {/* image */}
                             {item.url ? (
-                                // existing remote image
-                                <img src={item.url} alt="" className="block w-full h-auto object-cover" />
+                                item.width && item.height ? (
+                                    <NextImage
+                                        src={item.url}
+                                        width={item.width}
+                                        height={item.height}
+                                        alt=""
+                                        className="block w-full h-auto object-cover"
+                                    />
+                                ) : (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img src={item.url} alt="" className="block w-full h-auto object-cover" />
+                                )
                             ) : (
-                                // local preview
+                                // eslint-disable-next-line @next/next/no-img-element
                                 <img src={item.preview} alt="" className="block w-full h-auto object-cover" />
                             )}
 
