@@ -50,7 +50,7 @@ export default function Card({ id, title, image, description, count, media, type
   return (
     <>
       <article className={`group relative `}>
-        <div className="group relative">
+        <div className="group relative rounded-lg overflow-hidden">
           {type ? (
             <Link href={`${type ? type : '/art'}/${id}`}>
               <AspectRatio ratio={cover ? cover[0].width / cover[0].height : 5 / 4} className="bg-muted relative sm:group-hover:opacity-75">
@@ -80,7 +80,7 @@ export default function Card({ id, title, image, description, count, media, type
                     alt={title}
                     fill={true}
                     sizes="450px"
-                    className="sm:rounded-lg object-cover object-center"
+                    className="rounded-lg object-cover object-center"
                     onClick={openDialog}
                     priority={true}
                     placeholder='blur'
