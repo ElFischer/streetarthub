@@ -31,6 +31,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { uploadFile } from "@/lib/firebaseStore"
+import { ImageUploader, type UploaderItem } from "@/components/ui/image-uploader"
 
 interface EditorProps {
     post: Pick<Post, "id" | "title" | "content" | "approved" | "date" | "artist" | "category" | "description" | "source" | "cover" | "location"> & {
@@ -51,18 +52,10 @@ function getDefaultBlocks(post: EditorProps['post'], isDraft: boolean = false) {
     const isNewPost = !post.content || (post.content?.blocks && post.content.blocks.length === 0) || isDraft;
     
     if (isNewPost) {
-        // For new posts, only add the cover block
+        // For new posts, start without cover block (handled by custom uploader)
         return {
             time: Date.now(),
-            blocks: [
-                {
-                    id: "coverBlock",
-                    type: "coverBlock",
-                    data: {
-                        cover: post.cover || []
-                    }
-                }
-            ],
+            blocks: [],
             version: "2.28.2"
         };
     } else {
@@ -70,13 +63,6 @@ function getDefaultBlocks(post: EditorProps['post'], isDraft: boolean = false) {
         return {
             time: Date.now(),
             blocks: [
-                {
-                    id: "coverBlock",
-                    type: "coverBlock",
-                    data: {
-                        cover: post.cover || []
-                    }
-                },
                 ...(post.artist && post.artist.length > 0 ? [{
                     id: "artistBlock",
                     type: "artistBlock",
@@ -123,11 +109,6 @@ function extractMetadataFromBlocks(blocks: any[]) {
 
     blocks.forEach(block => {
         switch (block.type) {
-            case 'coverBlock':
-                if (block.data?.cover) {
-                    result.cover = block.data.cover
-                }
-                break
             case 'artistBlock':
                 if (block.data?.artists) {
                     result.artist = block.data.artists
@@ -169,6 +150,7 @@ export function Editor({ post, isDraft = false }: EditorProps) {
     const [isSaving, setIsSaving] = React.useState<boolean>(false)
     const [isDeleting, setIsDeleting] = React.useState<boolean>(false)
     const [isMounted, setIsMounted] = React.useState<boolean>(false)
+    const [coverItems, setCoverItems] = React.useState<UploaderItem[]>([])
 
 
     const initializeEditor = React.useCallback(async () => {
@@ -195,7 +177,6 @@ export function Editor({ post, isDraft = false }: EditorProps) {
         const CategoryBlock = (await import("@/components/editor/blocks/CategoryBlock")).default
         const MetadataBlock = (await import("@/components/editor/blocks/MetadataBlock")).default
         const LocationBlock = (await import("@/components/editor/blocks/LocationBlock")).default
-        const CoverBlock = (await import("@/components/editor/blocks/CoverBlock")).default
 
         // Parse post data safely for EditorJS initialization
         const body = {
@@ -245,17 +226,6 @@ export function Editor({ post, isDraft = false }: EditorProps) {
                     sourcePlaceholder: 'https://example.com/artwork-source'
                 }
             },
-            
-            // Always add CoverBlock to tools config (not in toolbox)
-            coverBlock: {
-                class: CoverBlock,
-                config: {
-                    placeholder: 'Upload cover image...',
-                    postId: post.id
-                },
-                inlineToolbar: false
-            },
-            
             // Standard EditorJS blocks
             header: Header,
             image: {
@@ -455,38 +425,119 @@ export function Editor({ post, isDraft = false }: EditorProps) {
 
         const editorData = await ref.current?.save()
 
-        // Extract metadata from editor blocks
+        // Extract metadata from editor blocks (without cover)
         const extractedData = extractMetadataFromBlocks(editorData?.blocks || [])
         
-        // Extract media filenames - cover image first, then other images
-        const mediaFilenames: string[] = []
-        
-        // Add cover image filename first (if exists)
-        if (extractedData.cover && extractedData.cover.length > 0) {
-            const coverUrl = extractedData.cover[0].url
-            console.log('Cover URL:', coverUrl)
-            if (coverUrl && (coverUrl.includes('art/') || coverUrl.includes('art%2F'))) {
-                const match = coverUrl.match(/art%2F([^?&]+)/)
-                
-                if (match && match[1]) {
-                    const decodedFilename = decodeURIComponent(match[1])
-                    console.log('Extracted cover filename:', decodedFilename)
-                    mediaFilenames.push(decodedFilename)
-                }
-            }
+        // Validate required title
+        if (!data.title || data.title.trim().length === 0) {
+            setIsSaving(false)
+            return toast({
+                title: "Title is required",
+                description: "Please enter a title for your post.",
+                variant: "destructive",
+            })
         }
         
-        // Then add other image block filenames
+        // Require at least one cover image from the uploader
+        if (!coverItems || coverItems.length === 0) {
+            setIsSaving(false)
+            return toast({
+                title: "Cover image is required",
+                description: "Please upload at least one cover image.",
+                variant: "destructive",
+            })
+        }
+        
+        const mediaFilenames: string[] = []
+        const finalCover: { url: string; width?: number; height?: number }[] = []
+        
+        try {
+            if (isDraft) {
+                // Upload cover images now (deferred until save) using a tempId
+                const tempId = `post-${Date.now()}`
+                for (let i = 0; i < coverItems.length; i++) {
+                    const item = coverItems[i]
+                    if (item.file) {
+                        const filename = `${tempId}_${Date.now()}_${i}`
+                        const url = await uploadFile(item.file, `art/${filename}`)
+                        if (url) {
+                            const obj: any = { url: url as string }
+                            if (typeof item.width === 'number') obj.width = item.width
+                            if (typeof item.height === 'number') obj.height = item.height
+                            finalCover.push(obj)
+                            mediaFilenames.push(filename)
+                        }
+                    } else if (item.url) {
+                        const obj: any = { url: item.url }
+                        if (typeof item.width === 'number') obj.width = item.width
+                        if (typeof item.height === 'number') obj.height = item.height
+                        finalCover.push(obj)
+                        // Also try to extract filename from existing URL if it's a Firebase art URL
+                        if (item.url.includes('art/') || item.url.includes('art%2F')) {
+                            const match = item.url.match(/art%2F([^?&]+)/)
+                            if (match && match[1]) mediaFilenames.push(decodeURIComponent(match[1]))
+                        }
+                    }
+                }
+                
+                // Upload any draft images from ImageTool blocks
+                if (editorData?.blocks) {
+                    for (const block of editorData.blocks) {
+                        if (block.type === 'image' && block.data?.file?.isDraft && block.data.file.originalFile) {
+                            const filename = `${tempId}_${Date.now()}`
+                            const url = await uploadFile(block.data.file.originalFile, `art/${filename}`)
+                            if (url) {
+                                mediaFilenames.push(filename)
+                                block.data.file = { url: url as string }
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Existing post: upload only new cover files; keep existing cover URLs
+                const baseId = post.id
+                for (let i = 0; i < coverItems.length; i++) {
+                    const item = coverItems[i]
+                    if (item.file) {
+                        const filename = `${baseId}_${Date.now()}_${i}`
+                        const url = await uploadFile(item.file, `art/${filename}`)
+                        if (url) {
+                            const obj: any = { url: url as string }
+                            if (typeof item.width === 'number') obj.width = item.width
+                            if (typeof item.height === 'number') obj.height = item.height
+                            finalCover.push(obj)
+                            mediaFilenames.push(filename)
+                        }
+                    } else if (item.url) {
+                        const obj: any = { url: item.url }
+                        if (typeof item.width === 'number') obj.width = item.width
+                        if (typeof item.height === 'number') obj.height = item.height
+                        finalCover.push(obj)
+                        if (item.url.includes('art/') || item.url.includes('art%2F')) {
+                            const match = item.url.match(/art%2F([^?&]+)/)
+                            if (match && match[1]) mediaFilenames.push(decodeURIComponent(match[1]))
+                        }
+                    }
+                }
+            }
+        } catch (uploadError) {
+            setIsSaving(false)
+            return toast({
+                title: "Upload failed",
+                description: "Failed to upload images. Please try again.",
+                variant: "destructive",
+            })
+        }
+
+        // Then add other image block filenames (already-uploaded in non-drafts)
         if (editorData?.blocks) {
             editorData.blocks.forEach((block: any) => {
                 if (block.type === 'image' && block.data?.file?.url) {
                     const url = block.data.file.url
                     if (url && (url.includes('art/') || url.includes('art%2F'))) {
-                        // Extract filename from Firebase Storage URL
                         const match = url.match(/art%2F([^?&]+)/)
                         if (match && match[1]) {
                             const decodedFilename = decodeURIComponent(match[1])
-                            console.log('Extracted image filename:', decodedFilename)
                             mediaFilenames.push(decodedFilename)
                         }
                     }
@@ -497,11 +548,9 @@ export function Editor({ post, isDraft = false }: EditorProps) {
         // Delete images that are no longer used (only for existing posts)
         if (!isDraft && post.id) {
             try {
-                // Get current image URLs from editor
+                // Current images = new cover URLs + current editor image URLs
                 const currentImageUrls = new Set<string>()
-                if (extractedData.cover && extractedData.cover.length > 0) {
-                    currentImageUrls.add(extractedData.cover[0].url)
-                }
+                finalCover.forEach((c) => { if (c.url) currentImageUrls.add(c.url) })
                 if (editorData?.blocks) {
                     editorData.blocks.forEach((block: any) => {
                         if (block.type === 'image' && block.data?.file?.url) {
@@ -510,19 +559,13 @@ export function Editor({ post, isDraft = false }: EditorProps) {
                     })
                 }
 
-                // Use existing post data to compare (no need to fetch again)
+                // Original URLs from existing post
                 const originalImageUrls = new Set<string>()
-                
-                // Get original cover images
                 if (post.cover && Array.isArray(post.cover)) {
                     post.cover.forEach((coverItem: any) => {
-                        if (coverItem.url) {
-                            originalImageUrls.add(coverItem.url)
-                        }
+                        if (coverItem.url) originalImageUrls.add(coverItem.url)
                     })
                 }
-                
-                // Get original content images
                 if (post.content && post.content.blocks) {
                     post.content.blocks.forEach((block: any) => {
                         if (block.type === 'image' && block.data?.file?.url) {
@@ -531,10 +574,7 @@ export function Editor({ post, isDraft = false }: EditorProps) {
                     })
                 }
 
-                // Find deleted images
                 const deletedImageUrls = Array.from(originalImageUrls).filter(url => !currentImageUrls.has(url))
-                
-                // Delete removed images from storage
                 if (deletedImageUrls.length > 0) {
                     const { deleteFile } = await import("@/lib/firebaseStore")
                     const deletePromises = deletedImageUrls.map(url => deleteFile(url))
@@ -546,74 +586,7 @@ export function Editor({ post, isDraft = false }: EditorProps) {
             }
         }
 
-        // Upload any draft images before saving
-        if (isDraft) {
-            try {
-                const { uploadFile } = await import("@/lib/firebaseStore");
-                const tempId = `post-${Date.now()}`;
-                
-                // Upload cover image if it's a draft
-                if (extractedData.cover && extractedData.cover.length > 0) {
-                    const coverData = extractedData.cover[0];
-                    if (coverData.isDraft && coverData.file) {
-                        const date = new Date();
-                        const url = await uploadFile(coverData.file, `art/${tempId}_${date.getTime()}`);
-                        
-                        // Update cover data with uploaded URL
-                        extractedData.cover[0] = {
-                            url: url as string,
-                            width: coverData.width || 0,
-                            height: coverData.height || 0
-                        };
-                    }
-                }
-                
-                // Upload any draft images from ImageTool blocks
-                if (editorData?.blocks) {
-                    for (const block of editorData.blocks) {
-                        if (block.type === 'image' && block.data?.file?.isDraft && block.data.file.originalFile) {
-                            const date = new Date();
-                            const filename = `${tempId}_${date.getTime()}`;
-                            const url = await uploadFile(block.data.file.originalFile, `art/${filename}`);
-                            
-                            // Add filename to media array
-                            mediaFilenames.push(filename);
-                            
-                            // Update block data with uploaded URL
-                            block.data.file = {
-                                url: url as string
-                            };
-                        }
-                    }
-                }
-            } catch (uploadError) {
-                setIsSaving(false);
-                return toast({
-                    title: "Upload failed",
-                    description: "Failed to upload images. Please try again.",
-                    variant: "destructive",
-                });
-            }
-        }
-
-        // Validate required fields
-        if (!data.title || data.title.trim().length === 0) {
-            setIsSaving(false)
-            return toast({
-                title: "Title is required",
-                description: "Please enter a title for your post.",
-                variant: "destructive",
-            })
-        }
-
-        if (!extractedData.cover || extractedData.cover.length === 0 || !extractedData.cover[0]?.url) {
-            setIsSaving(false)
-            return toast({
-                title: "Cover image is required",
-                description: "Please upload a cover image for your post.",
-                variant: "destructive",
-            })
-        }
+        // Remove old draft-upload path and cover validation from editor blocks (handled above)
 
         // Prepare the post data, combining form data and extracted block data
         const postData: any = {
@@ -627,9 +600,9 @@ export function Editor({ post, isDraft = false }: EditorProps) {
             postData.media = mediaFilenames
         }
         
-        // Use data from blocks if available
-        if (extractedData.cover && extractedData.cover.length > 0) {
-            postData.cover = extractedData.cover
+        // Use cover from uploader
+        if (finalCover.length > 0) {
+            postData.cover = finalCover
         }
         if (extractedData.artist && extractedData.artist.length > 0) {
             postData.artist = extractedData.artist
@@ -803,6 +776,16 @@ export function Editor({ post, isDraft = false }: EditorProps) {
                         className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none mb-8"
                         {...register("title", { required: "Title is required" })}
                     />
+                    {/* Cover uploader */}
+                    <div className="mb-6">
+                        <h3 className="text-base font-semibold mb-2">Cover Images *</h3>
+                        <ImageUploader
+                            initialItems={(post.cover as any) || []}
+                            onChange={setCoverItems}
+                            maxFiles={12}
+                        />
+                        <p className="text-xs text-muted-foreground mt-2">Mehrere Bilder möglich. Reihenfolge entspricht der Anzeige.</p>
+                    </div>
                     
                     {/* EditorJS with custom metadata blocks */}
                     <div id="editor" className="min-h-[500px]" />
